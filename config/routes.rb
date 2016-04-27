@@ -1,6 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
-
+  map.login  '/login',  :controller => 'users', :action => 'login'
+  map.logout  '/logout',  :controller => 'users', :action => 'logout'
+  map.user_profile  '/user_profile',  :controller => 'users', :action => 'user_profile'
+  map.user_profile  '/settings',  :controller => 'admin', :action => 'settings'
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
