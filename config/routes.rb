@@ -3,7 +3,12 @@ ActionController::Routing::Routes.draw do |map|
   map.login  '/login',  :controller => 'users', :action => 'login'
   map.logout  '/logout',  :controller => 'users', :action => 'logout'
   map.user_profile  '/user_profile',  :controller => 'users', :action => 'user_profile'
-  map.user_profile  '/settings',  :controller => 'admin', :action => 'settings'
+  map.settings  '/settings',  :controller => 'admin', :action => 'settings'
+  map.add_user  '/add_user',  :controller => 'admin', :action => 'add_user'
+  map.add_tournament  '/add_tournament',  :controller => 'admin', :action => 'add_tournament'
+  map.add_tournament_result  '/add_tournament_result',  :controller => 'admin', :action => 'add_tournament_result'
+  map.add_participants  '/add_participants',  :controller => 'admin', :action => 'add_participants'
+  map.add_participants  '/add_competition',  :controller => 'admin', :action => 'add_competition'
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
