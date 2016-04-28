@@ -1,0 +1,73 @@
+<script type="text/javascript">
+
+  function cancelEvent(){
+    window.location = '/add_user';
+  }
+
+</script>
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Editing <%= @user.first_name.to_s + ' ' + @user.last_name.to_s%></h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+
+<!-- /.row -->
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        User Editing
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <% if flash[:notice] %>
+              <div class="alert alert-success alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <%= flash[:notice] %>
+              </div>
+            <% end %>
+
+            <form role="form" action="/admin/update_user">
+              <div class="form-group">
+                <label>Phone #</label>
+                <input value="<%= @user.phone_number %>" class="form-control" placeholder="Phone #" name="phone_number"/>
+              </div>
+
+              <div class="form-group">
+                <label>First Name</label>
+                <input value="<%= @user.first_name %>" class="form-control" placeholder="First Name" name="first_name"/>
+              </div>
+
+              <div class="form-group">
+                <label>Last Name</label>
+                <input value="<%= @user.last_name %>" class="form-control" placeholder="Last Name" name="last_name"/>
+              </div>
+
+              <div class="form-group">
+                <label>Nick Name</label>
+                <input value="<%= @user.nick_name %>" class="form-control" placeholder="Nick Name" name="nick_name"/>
+              </div>
+
+              <!--<div class="form-group">
+                <label>Profile Pic</label>
+                <input type="file"/>
+              </div>-->
+              <%= hidden_field_tag("user_id", params[:user_id]) %>
+              <button type="submit" class="btn btn-default">Submit Button</button>
+              <button onclick="cancelEvent();" type="reset" class="btn btn-danger">Cancel</button>
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- /.row -->

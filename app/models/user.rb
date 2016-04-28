@@ -3,7 +3,7 @@ require 'digest/sha2'
 
 class User < ActiveRecord::Base
   set_table_name :users
-  set_primary_key :phone_number
+  set_primary_key :user_id
 
   #before_save :set_password
 
