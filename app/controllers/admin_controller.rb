@@ -88,9 +88,29 @@ class AdminController < ApplicationController
   end
   
   def add_tournament_result
-
+    @tournaments = Tournament.all
   end
 
+  def add_my_tourney_result
+    @tournament = Tournament.find(params[:tournament_id])
+    @tournament_participants = User.all
+  end
+
+  def capture_tourney_results
+    tournament_id = params[:tournament_id]
+    ActiveRecord::Base.transaction do
+      params[:participants].each do |participant_id, result|
+        tournament_result = TournamentResult.new
+        tournament_result.tournament_id = tournament_id
+        tournament_result.participant_id = participant_id
+        tournament_result.result = result
+        tournament_result.save
+      end
+    end
+    flash[:notice] = "Your operation is succeessful"
+    redirect_to("/add_tournament_result ") and return
+  end
+  
   def add_participants
 
   end

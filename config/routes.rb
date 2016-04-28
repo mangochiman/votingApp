@@ -10,7 +10,8 @@ ActionController::Routing::Routes.draw do |map|
   map.add_participants  '/add_participants',  :controller => 'admin', :action => 'add_participants'
   map.add_participants  '/add_competition',  :controller => 'admin', :action => 'add_competition'
   map.edit_tourney '/edit_tournament/:tournament_id', :controller => 'admin', :action => 'edit_tournament'
-  map.edit_tourney '/edit_user/:user_id', :controller => 'admin', :action => 'edit_user'
+  map.edit_user '/edit_user/:user_id', :controller => 'admin', :action => 'edit_user'
+  map.add_tourney_result '/add_my_tourney_result/:tournament_id', :controller => 'admin', :action => 'add_my_tourney_result'
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
