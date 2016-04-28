@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   set_table_name :users
   set_primary_key :phone_number
 
-  before_save :set_password
+  #before_save :set_password
 
   cattr_accessor :current_user
 

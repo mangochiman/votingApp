@@ -16,25 +16,31 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-6">
-            <form role="form" action="#">
+            <% if flash[:notice] %>
+              <div class="alert alert-success alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <%= flash[:notice] %>
+              </div>
+            <% end %>
+            <form role="form" action="/admin/create_user">
               <div class="form-group">
                 <label>Phone #</label>
-                <input class="form-control" placeholder="Phone #"/>
+                <input class="form-control" placeholder="Phone #" name="phone_number"/>
               </div>
 
               <div class="form-group">
                 <label>First Name</label>
-                <input class="form-control" placeholder="First Name"/>
+                <input class="form-control" placeholder="First Name" name="first_name"/>
               </div>
 
               <div class="form-group">
                 <label>Last Name</label>
-                <input class="form-control" placeholder="Last Name"/>
+                <input class="form-control" placeholder="Last Name" name="last_name"/>
               </div>
 
               <div class="form-group">
                 <label>Nick Name</label>
-                <input class="form-control" placeholder="Last Name"/>
+                <input class="form-control" placeholder="Nick Name" name="nick_name"/>
               </div>
 
               <!--<div class="form-group">
@@ -54,7 +60,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        Registered Users(1)
+        Registered Users(<%=  @users.count %>)
       </div>
       <div class="row">
         <div class="col-lg-12">
@@ -67,6 +73,7 @@
                   <thead>
                     <tr>
                       <th>#</th>
+                      <th>Phone #</th>
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>NickName</th>
@@ -75,14 +82,18 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <% count = 0 %>
+                    <% @users.each do |user| %>
                     <tr>
-                      <td>1</td>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                      <td>@mdo</td>
+                      <td><%= count= count + 1 %></td>
+                      <td><%= user.phone_number %></td>
+                      <td><%= user.first_name %></td>
+                      <td><%= user.last_name %></td>
+                      <td><%= user.nick_name %></td>
                       <td><button class="btn btn-warning btn-block" type="button">Edit</button></td>
                       <td><button class="btn btn-danger btn-block" type="button">Delete</button></td>
                     </tr>
+                    <% end %>
                   </tbody>
                 </table>
               </div>
