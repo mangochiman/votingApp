@@ -121,6 +121,20 @@ class AdminController < ApplicationController
     @users = User.find_by_sql("SELECT u.* FROM users u LEFT JOIN tournament_participants tp ON u.user_id = tp.user_id
       AND tp.tournament_id = '#{params[:tournament_id]}' WHERE tp.tournament_id IS NULL")
   end
+
+  def create_tourney_participants
+    tournament_id = params[:tournament_id]
+    ActiveRecord::Base.transaction do
+      params[:user_ids].each do |user_id|
+        tournament_participant = TournamentParticipant.new
+        tournament_participant.user_id = user_id
+        tournament_participant.tournament_id = tournament_id
+        tournament_participant.save
+      end
+    end
+    flash[:notice] = "Your operation is successful"
+    redirect_to("/select_tourney/#{tournament_id} ") and return
+  end
   
   def add_participants
 
