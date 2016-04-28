@@ -113,6 +113,13 @@ class AdminController < ApplicationController
 
   def select_tourney
     @tournament = Tournament.find(params[:tournament_id])
+    @tournament_participants = @tournament.participants
+  end
+
+  def add_tourney_participants
+    @tournament = Tournament.find(params[:tournament_id])
+    @users = User.find_by_sql("SELECT u.* FROM users u LEFT JOIN tournament_participants tp ON u.user_id = tp.user_id
+      AND tp.tournament_id = '#{params[:tournament_id]}' WHERE tp.tournament_id IS NULL")
   end
   
   def add_participants
