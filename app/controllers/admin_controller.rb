@@ -110,6 +110,10 @@ class AdminController < ApplicationController
     flash[:notice] = "Your operation is succeessful"
     redirect_to("/add_tournament_result ") and return
   end
+
+  def select_tourney
+    @tournament = Tournament.find(params[:tournament_id])
+  end
   
   def add_participants
 

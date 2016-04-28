@@ -5,4 +5,6 @@ class TournamentParticipant < ActiveRecord::Base
   set_primary_keys :tournament_id, :participant_id
 
   belongs_to :tournament, :foreign_key => :tournament_id
+  belongs_to :participant, :foreign_key => :participant_id, :primary_key => :user_id
+  
 end

@@ -36,7 +36,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-   
+
   </head>
 
   <body>
@@ -109,12 +109,11 @@
               <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Tournaments<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                  <li>
-                    <a href="flot.html">Flot Charts</a>
-                  </li>
-                  <li>
-                    <a href="morris.html">Morris.js Charts</a>
-                  </li>
+                  <% Tournament.all.each do |tournament| %>
+                    <li>
+                      <a href="/select_tourney/<%= tournament.tournament_id %>"><%= tournament.name %></a>
+                    </li>
+                  <% end %>
                 </ul>
                 <!-- /.nav-second-level -->
               </li>
@@ -133,9 +132,9 @@
         <div id="page-wrapper">
           <%= yield %>
         </div>
-        
+
       </div>
-      
+
       <!-- /#page-wrapper -->
 
     </div>
