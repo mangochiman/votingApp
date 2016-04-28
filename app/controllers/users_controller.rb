@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def login
-
+    render :layout => false
   end
 
   def logout
@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def user_profile
-
+    render :layout => false
   end
   
 end
