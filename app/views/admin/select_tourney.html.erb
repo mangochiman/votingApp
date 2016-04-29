@@ -4,7 +4,31 @@
     window.location = '/add_tourney_participants/' + tournementID;
   }
 
+  var currentUserID = '';
+  function confirmAction(obj){
+    currentUserID = obj.getAttribute("userid")
+    nickName = obj.getAttribute("nick_name");
+    document.getElementById("nick_name").innerHTML = nickName;
+    $('#myModal').modal('show');
+  }
+
+  function deleteUser(){
+    jQuery.ajax({
+      type: "POST",
+      url: "/admin/delete_participant_from_tourney",
+      data: "userid=" + currentUserID + "&tournament_id=" + tournementID,
+      success: function(){
+        window.location = '/select_tourney/' + tournementID
+      }
+
+    });
+  }
 </script>
+<style>
+  #nick_name{
+    font-weight: bold;
+}
+</style>
 <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header"><%= @tournament.name %></h1>
@@ -47,7 +71,7 @@
                   <td><%= participant.first_name %></td>
                   <td><%= participant.last_name %></td>
                   <td><%= participant.nick_name %></td>
-                  <td><button class="btn btn-danger btn-block" type="button">Delete</button></td>
+                  <td><button nick_name="<%= participant.nick_name %>"userid="<%= participant.user_id %>" onmousedown="confirmAction(this);" class="btn btn-danger btn-block" type="button">Delete</button></td>
                 </tr>
               <% end %>
 
@@ -108,3 +132,26 @@
   </div>
   <!-- /.col-lg-6 -->
 </div>
+
+
+<!--CONFIRMATION POPUP BEGIN -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">
+          Delete Confirmation
+        </h4>
+      </div>
+      <div class="modal-body">
+        <span style="text-align:center;">You are about to delete <span id="nick_name"></span> from the tournament. You can not undo this action. Are you really very sure?</span>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="deleteUser();" data-dismiss="modal">Okay</button>
+          <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--CONFIRMATION POPUP END -->

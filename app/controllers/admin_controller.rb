@@ -135,6 +135,15 @@ class AdminController < ApplicationController
     flash[:notice] = "Your operation is successful"
     redirect_to("/select_tourney/#{tournament_id} ") and return
   end
+
+  def delete_participant_from_tourney
+    tournament_id = params[:tournament_id]
+    user_id = params[:userid]
+    tournament_participant = TournamentParticipant.find(:first, :conditions => ["user_id =? AND tournament_id =?",
+        user_id, tournament_id])
+    tournament_participant.delete
+    render :text => "true" and return
+  end
   
   def add_participants
 
