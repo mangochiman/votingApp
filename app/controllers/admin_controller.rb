@@ -114,12 +114,17 @@ class AdminController < ApplicationController
   def select_tourney
     @tournament = Tournament.find(params[:tournament_id])
     @tournament_participants = @tournament.participants
+    @tournament_competitions = @tournament.competitions
   end
 
   def add_tourney_participants
     @tournament = Tournament.find(params[:tournament_id])
     @users = User.find_by_sql("SELECT u.* FROM users u LEFT JOIN tournament_participants tp ON u.user_id = tp.user_id
       AND tp.tournament_id = '#{params[:tournament_id]}' WHERE tp.tournament_id IS NULL")
+  end
+
+  def add_tourney_competitions
+    @tournament = Tournament.find(params[:tournament_id])
   end
 
   def create_tourney_participants
@@ -136,12 +141,23 @@ class AdminController < ApplicationController
     redirect_to("/select_tourney/#{tournament_id} ") and return
   end
 
+  def create_tourney_competitions
+
+  end
+  
   def delete_participant_from_tourney
     tournament_id = params[:tournament_id]
     user_id = params[:userid]
     tournament_participant = TournamentParticipant.find(:first, :conditions => ["user_id =? AND tournament_id =?",
         user_id, tournament_id])
     tournament_participant.delete
+    render :text => "true" and return
+  end
+
+  def delete_competition_from_tourney
+    competition_id = params[:competition]
+    tournament_competition = Competition.find(competition_id)
+    tournament_competition.delete
     render :text => "true" and return
   end
   

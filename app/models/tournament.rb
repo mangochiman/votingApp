@@ -6,5 +6,5 @@ class Tournament < ActiveRecord::Base
   has_many :participants, :through => :tournament_participants
   has_many :tournament_results, :foreign_key => :tournament_id
   has_many :voting_types, :foreign_key => :tournament_id
-  
+  has_many :competitions, :foreign_key => :tournament_id #voting_type model == competition
 end

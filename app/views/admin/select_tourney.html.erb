@@ -4,6 +4,10 @@
     window.location = '/add_tourney_participants/' + tournementID;
   }
 
+  function addTourneyCompetitions(){
+    window.location = '/add_tourney_competitions/' + tournementID;
+  }
+
   var currentUserID = '';
   function confirmAction(obj){
     currentUserID = obj.getAttribute("userid")
@@ -23,11 +27,31 @@
 
     });
   }
+
+  var currentCompetitionID = '';
+  function competitionConfirmAction(){
+    currentCompetitionID = obj.getAttribute("competition_id")
+    competitionName = obj.getAttribute("competition_name");
+    document.getElementById("competition_name").innerHTML = competitionName;
+    $('#competitionModal').modal('show');
+  }
+
+  function deleteCompetition(){
+    jQuery.ajax({
+      type: "POST",
+      url: "/admin/delete_competition_from_tourney",
+      data: "competition_id=" + currentCompetitionID + "&tournament_id=" + tournementID,
+      success: function(){
+        window.location = '/select_tourney/' + tournementID
+      }
+
+    });
+  }
 </script>
 <style>
-  #nick_name{
+  #nick_name, #competition_name{
     font-weight: bold;
-}
+  }
 </style>
 <div class="row">
   <div class="col-lg-12">
@@ -88,7 +112,7 @@
   <div class="col-lg-6">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Competitions (0)
+        Competitions (<%= @tournament_competitions.count %>)
       </div>
       <!-- /.panel-heading -->
       <div class="panel-body">
@@ -97,30 +121,22 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
+                <th>Competition Name</th>
+                <th>Required Votes</th>
+                <th>&nbsp;</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              <% count = 0 %>
+              <% @tournament_competitions.each do |competition| %>
+                <tr>
+                  <td><%= count = count + 1 %></td>
+                  <td><%= competition.name %></td>
+                  <td><%= competition.max_votes %></td>
+
+                  <td><button competition_name="<%= competition.name %>" competition_id="<%= competition.voting_type_id %>" onmousedown="competitionConfirmAction(this);" class="btn btn-danger btn-block" type="button">Delete</button></td>
+                </tr>
+              <% end %>
             </tbody>
           </table>
         </div>
@@ -148,6 +164,28 @@
         <span style="text-align:center;">You are about to delete <span id="nick_name"></span> from the tournament. You can not undo this action. Are you really very sure?</span>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" onclick="deleteUser();" data-dismiss="modal">Okay</button>
+          <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--CONFIRMATION POPUP END -->
+
+<!--CONFIRMATION POPUP BEGIN -->
+<div class="modal fade" id="competitionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">
+          Delete Confirmation
+        </h4>
+      </div>
+      <div class="modal-body">
+        <span style="text-align:center;">You are about to delete <span id="competition_name"></span> from the tournament. You can not undo this action. Are you really very sure?</span>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="deleteCompetition();" data-dismiss="modal">Okay</button>
           <button type="button" class="btn" data-dismiss="modal">Cancel</button>
         </div>
       </div>
