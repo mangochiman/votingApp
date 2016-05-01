@@ -205,7 +205,7 @@ class AdminController < ApplicationController
   end
   
   def add_participants
-
+     @tournaments = Tournament.all
   end
 
   def add_competition

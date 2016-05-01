@@ -1,0 +1,71 @@
+<script type="text/javascript">
+
+  function addEditParticipants(tournamentID){
+    window.location = '/select_tourney/' + tournamentID;
+  }
+
+</script>
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Add/Edit Participants</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+
+<!-- /.row -->
+<div class="row">
+  <div class="col-lg-12">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Registered Tournaments(<%=  @tournaments.count %>)
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <br />
+          <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tournament Name</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Sponsored By</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% count = 0 %>
+                    <% @tournaments.each do |tournament| %>
+                      <tr>
+                        <td><%= count= count + 1 %></td>
+                        <td><%= tournament.name %></td>
+                        <td><%= tournament.start_date %></td>
+                        <td><%= tournament.end_date %></td>
+                        <td><%= tournament.sponsored_by %></td>
+                        <td><button onclick="addEditParticipants('<%= tournament.tournament_id %>')" class="btn btn-primary btn-block" type="button">Select</button></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+          </div>
+          <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-6 -->
+
+        <!-- /.col-lg-6 -->
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- /.row -->
