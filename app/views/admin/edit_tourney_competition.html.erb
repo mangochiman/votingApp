@@ -9,36 +9,38 @@
 
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><%= @tournament.name %></h1>
+    <h1 class="page-header"><%= @competition.name %></h1>
   </div>
 </div>
 
 <div class="panel-body">
   <div class="row">
     <div class="col-lg-4">
-      <form role="form" action="/admin/create_tourney_competitions">
+      <form role="form" action="/admin/update_tourney_competition">
         <div class="form-group">
           <label>Competition Name</label>
-          <input name="competition_name" placeholder="Competition Name" class="form-control"/>
+          <input value="<%=  @competition.name %>" name="competition_name" placeholder="Competition Name" class="form-control"/>
         </div>
         <div class="form-group">
           <label>Maximum Participants to Vote For</label>
-          <input name="max_votes" placeholder="Max votes" class="form-control"/>
+          <input value="<%= @competition.max_votes %>" name="max_votes" placeholder="Max votes" class="form-control"/>
         </div>
         <div class="form-group">
           <label>Start Date</label>
-          <input name="start_date" placeholder="Start Date" class="form-control"/>
+          <input value="<%=  @competition.start_date %>" name="start_date" placeholder="Start Date" class="form-control"/>
         </div>
         <div class="form-group">
           <label>End Date</label>
-          <input name="end_date" placeholder="End Date" class="form-control"/>
+          <input value="<%=  @competition.end_date %>" name="end_date" placeholder="End Date" class="form-control"/>
         </div>
         <div class="form-group">
           <label>Description</label>
-          <textarea name="description" rows="3" class="form-control"></textarea>
+          <textarea  name="description" rows="3" class="form-control"><%=  @competition.description %></textarea>
         </div>
-        
+
         <%= hidden_field_tag("tournament_id", params[:tournament_id]) %>
+        <%= hidden_field_tag("competition_id", params[:competition_id]) %>
+
         <button class="btn btn-primary" type="submit">Submit Button</button>
         <button class="btn btn-warning" type="reset">Reset Button</button>
         <button onclick="cancelEvent();" class="btn btn-danger" type="reset">Cancel Button</button>

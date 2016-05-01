@@ -4,6 +4,9 @@ class CreateVotingTypes < ActiveRecord::Migration
       t.integer :tournament_id
       t.string :name
       t.integer :max_votes
+      t.date :start_date
+      t.date :end_date
+      t.string :description
       t.timestamps
     end
   end

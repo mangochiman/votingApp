@@ -47,6 +47,11 @@
 
     });
   }
+
+  function editCompetition(competitionID){
+    window.location = '/edit_tourney_competition/' + competitionID + '/' + tournementID;
+  }
+  
 </script>
 <style>
   #nick_name, #competition_name{
@@ -122,8 +127,10 @@
               <tr>
                 <th>#</th>
                 <th>Competition Name</th>
-                <th>Required Votes</th>
-                <th>&nbsp;</th>
+                <!--<th>Required Votes</th>-->
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th style="text-align: center;"colspan="2">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -132,8 +139,10 @@
                 <tr>
                   <td><%= count = count + 1 %></td>
                   <td><%= competition.name %></td>
-                  <td><%= competition.max_votes %></td>
-
+                  <!--<td><%= competition.max_votes %></td>-->
+                  <td><%= competition.start_date %></td>
+                  <td><%= competition.end_date %></td>
+                  <td><button onmousedown="editCompetition(<%= competition.voting_type_id %>)" class="btn btn-warning btn-block" type="button">Edit</button></td>
                   <td><button competition_name="<%= competition.name %>" competition_id="<%= competition.voting_type_id %>" onmousedown="competitionConfirmAction(this);" class="btn btn-danger btn-block" type="button">Delete</button></td>
                 </tr>
               <% end %>

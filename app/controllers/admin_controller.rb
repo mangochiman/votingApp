@@ -142,6 +142,49 @@ class AdminController < ApplicationController
   end
 
   def create_tourney_competitions
+    competition_name = params[:competition_name]
+    max_votes = params[:max_votes]
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+    description = params[:description]
+    tournament_id = params[:tournament_id]
+    
+    competition = Competition.new
+    competition.name = competition_name
+    competition.tournament_id = tournament_id
+    competition.max_votes = max_votes
+    competition.start_date = start_date
+    competition.end_date = end_date
+    competition.description = description
+    competition.save
+
+    flash[:notice] = "Your operation is successful"
+    redirect_to("/select_tourney/#{tournament_id} ") and return
+  end
+
+  def edit_tourney_competition
+    @competition = Competition.find(params[:competition_id])
+  end
+
+  def update_tourney_competition
+    competition_name = params[:competition_name]
+    max_votes = params[:max_votes]
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+    description = params[:description]
+    tournament_id = params[:tournament_id]
+
+    competition = Competition.find(params[:competition_id])
+    competition.name = competition_name
+    #competition.tournament_id = tournament_id
+    competition.max_votes = max_votes
+    competition.start_date = start_date
+    competition.end_date = end_date
+    competition.description = description
+    competition.save
+
+    flash[:notice] = "Your operation is successful"
+    redirect_to("/select_tourney/#{tournament_id} ") and return
 
   end
   
