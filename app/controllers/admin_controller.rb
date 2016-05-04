@@ -211,4 +211,8 @@ class AdminController < ApplicationController
     @tournaments = Tournament.all
   end
 
+  def suggestions
+
+  end
+  
 end

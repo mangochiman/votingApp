@@ -16,6 +16,7 @@ ActionController::Routing::Routes.draw do |map|
   map.add_tourney_participants '/add_tourney_participants/:tournament_id', :controller => 'admin', :action => 'add_tourney_participants'
   map.add_tourney_competitions '/add_tourney_competitions/:tournament_id', :controller => 'admin', :action => 'add_tourney_competitions'
   map.edit_tourney_competition '/edit_tourney_competition/:competition_id/:tournament_id', :controller => 'admin', :action => 'edit_tourney_competition'
+  map.suggestions '/suggestions', :controller => 'admin', :action => 'suggestions'
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action

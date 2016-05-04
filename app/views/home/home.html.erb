@@ -7,27 +7,65 @@
 </div>
 
 <div class="row">
-  <div class="col-lg-12 col-md-6 pull-right">
-    <div class="panel panel-primary">
+  <div class="col-lg-8">
+    <div class="panel panel-default">
       <div class="panel-heading">
-        <div class="row">
-          <div class="col-xs-3">
-            <i class="fa fa-angle-double-up fa-5x"></i>
-          </div>
-          <div class="col-xs-9 text-right">
-            <div class="huge">26</div>
-            <div>New Votes</div>
-          </div>
-        </div>
+        <i class="fa fa-bar-chart-o fa-fw"></i> Tournaments (<%= @tournaments.count %>)
       </div>
-      <a href="#">
-        <div class="panel-footer">
-          <span class="pull-left">View Details</span>
-          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-          <div class="clearfix"></div>
+      <!-- /.panel-heading -->
+      <div class="panel-body">
+        <% @tournaments.each do |tournament| %>
+          <a class="list-group-item" href="#">
+            <i class="fa fa-delicious fa-fw"></i><%= tournament.name %>
+            <span class="pull-right text-muted small"><em><%= tournament.sponsored_by %></em>
+            </span>
+          </a>
+        <% end %>
+      </div>
+      <!-- /.panel-body -->
+    </div>
+
+    <a class="btn btn-default btn-block" href="#">View All Tournaments</a>
+  </div>
+  <!-- /.col-lg-8 -->
+  <div class="col-lg-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-bell fa-fw"></i> Notifications Panel
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body">
+        <div class="list-group">
+          <a class="list-group-item" href="#">
+            <i class="fa fa-comment fa-fw"></i> New Comment
+            <span class="pull-right text-muted small"><em>4 minutes ago</em>
+            </span>
+          </a>
+          <a class="list-group-item" href="#">
+            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+            <span class="pull-right text-muted small"><em>12 minutes ago</em>
+            </span>
+          </a>
+          <a class="list-group-item" href="#">
+            <i class="fa fa-envelope fa-fw"></i> Message Sent
+            <span class="pull-right text-muted small"><em>27 minutes ago</em>
+            </span>
+          </a>
+          <a class="list-group-item" href="#">
+            <i class="fa fa-tasks fa-fw"></i> New Task
+            <span class="pull-right text-muted small"><em>43 minutes ago</em>
+            </span>
+          </a>
+          <a class="list-group-item" href="#">
+            <i class="fa fa-upload fa-fw"></i> Server Rebooted
+            <span class="pull-right text-muted small"><em>11:32 AM</em>
+            </span>
+          </a>
+
         </div>
-      </a>
+        <!-- /.list-group -->
+        <a class="btn btn-default btn-block" href="#">View All Alerts</a>
+      </div>
     </div>
   </div>
-
 </div>
