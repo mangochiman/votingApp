@@ -1,0 +1,76 @@
+<script type="text/javascript">
+  
+  function participateCompetition(competitionID){
+    window.location = "/predictions/" + competitionID;
+  }
+  
+</script>
+<style type="text/css">
+  #nick_name, #competition_name{
+    font-weight: bold;
+  }
+</style>
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Competitions</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+
+<% if flash[:notice] %>
+  <div class="alert alert-success alert-dismissable">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<div class="row">
+
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Competitions (<%= @competitions.count %>)
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Competition Name</th>
+                <th>Required Votes</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Total Voters</th>
+                <th>Tournament Name</th>
+                <th style="text-align: center;" colspan="2">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% count = 0 %>
+              <% @competitions.each do |competition| %>
+                <tr>
+                  <td><%= count = count + 1 %></td>
+                  <td><%= competition.name %></td>
+                  <td><%= competition.max_votes %></td>
+                  <td><%= competition.start_date %></td>
+                  <td><%= competition.end_date %></td>
+                  <td><%= competition.tournament.name %></td>
+                  <td><%= competition.total_voters.count %></td>
+                  <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Participate</button></td>
+                  <td><button onmousedown="withdrawFromCompetition(<%= competition.voting_type_id %>)" class="btn btn-danger btn-block" type="button">Withdraw</button></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-6 -->
+</div>
+

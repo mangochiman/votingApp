@@ -10,13 +10,13 @@
   <div class="col-lg-8">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <i class="fa fa-bar-chart-o fa-fw"></i> Tournaments (<%= @tournaments.count %>)
+        <i class="fa fa-bar-chart-o fa-fw"></i> Tournaments (<%= @all_tournaments.count %>)
       </div>
       <!-- /.panel-heading -->
       <div class="panel-body">
         <% @tournaments.each do |tournament| %>
           <a class="list-group-item" href="#">
-            <i class="fa fa-delicious fa-fw"></i><%= tournament.name %>
+            <i class="fa fa-delicious fa-fw"></i><%= "#{tournament.name} <b>(#{tournament.start_date.to_date.strftime('%d-%b-%Y')} - #{tournament.end_date})</b>" %>
             <span class="pull-right text-muted small"><em><%= tournament.sponsored_by %></em>
             </span>
           </a>
@@ -31,7 +31,7 @@
   <div class="col-lg-4">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <i class="fa fa-bell fa-fw"></i> Notifications Panel
+        <i class="fa fa-bell fa-fw"></i> Recent Votes
       </div>
       <!-- /.panel-heading -->
       <div class="panel-body">
@@ -39,26 +39,6 @@
           <a class="list-group-item" href="#">
             <i class="fa fa-comment fa-fw"></i> New Comment
             <span class="pull-right text-muted small"><em>4 minutes ago</em>
-            </span>
-          </a>
-          <a class="list-group-item" href="#">
-            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-            <span class="pull-right text-muted small"><em>12 minutes ago</em>
-            </span>
-          </a>
-          <a class="list-group-item" href="#">
-            <i class="fa fa-envelope fa-fw"></i> Message Sent
-            <span class="pull-right text-muted small"><em>27 minutes ago</em>
-            </span>
-          </a>
-          <a class="list-group-item" href="#">
-            <i class="fa fa-tasks fa-fw"></i> New Task
-            <span class="pull-right text-muted small"><em>43 minutes ago</em>
-            </span>
-          </a>
-          <a class="list-group-item" href="#">
-            <i class="fa fa-upload fa-fw"></i> Server Rebooted
-            <span class="pull-right text-muted small"><em>11:32 AM</em>
             </span>
           </a>
 

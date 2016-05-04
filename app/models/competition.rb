@@ -5,4 +5,9 @@ class Competition < ActiveRecord::Base
 
   has_many :votes, :foreign_key => :voting_type_id
   belongs_to :tournament, :foreign_key => :tournament_id
+
+  def total_voters
+    voters =  self.votes.find(:all, :group => 'user_id')
+    return voters
+  end
 end
