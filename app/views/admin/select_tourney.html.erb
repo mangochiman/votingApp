@@ -29,7 +29,7 @@
   }
 
   var currentCompetitionID = '';
-  function competitionConfirmAction(){
+  function competitionConfirmAction(obj){
     currentCompetitionID = obj.getAttribute("competition_id")
     competitionName = obj.getAttribute("competition_name");
     document.getElementById("competition_name").innerHTML = competitionName;

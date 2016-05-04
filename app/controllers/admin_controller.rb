@@ -198,8 +198,7 @@ class AdminController < ApplicationController
   end
 
   def delete_competition_from_tourney
-    competition_id = params[:competition]
-    tournament_competition = Competition.find(competition_id)
+    tournament_competition = Competition.find(params[:competition_id])
     tournament_competition.delete
     render :text => "true" and return
   end
