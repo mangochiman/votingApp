@@ -1,4 +1,6 @@
 <script type="text/javascript">
+  var maxVotes = parseInt('<%= @competition.max_votes %>');
+
   function resetTable(){
     window.location = location.href;
   }
@@ -18,21 +20,67 @@
     });       
   }
 
-  function createFormElements(){
+  function processVotes(){
     spanElements = $('.my_votes').find("span");
+    voters_data = document.getElementById("voters_data")
+    if (voters_data) voters_data.parentNode.removeChild(voters_data);
+    
+    form = document.createElement('form');
+    form.action ='/home/create_votes';
+    form.id = 'voters_data';
+
     for (var i=0; i <= spanElements.length - 1; i++){
       userid = spanElements[i].getAttribute("userid");
-      console.log(userid);
+      createInput(form, 'text', "user_ids[]", userid)
     }
+
+    document.getElementsByTagName('body')[0].appendChild(form);
+  }
+
+
+  function createInput(form, type, name, value){
+    input = document.createElement('input');
+    input.type = type
+    input.value = value
+    input.name = name
+    form.appendChild(input)
+  }
+
+  function confirmAction(){
+    total_votes = $('.my_votes').find('tr').length;
+    div = '<div class="alert alert-success alert-dismissable" style="display: none;">';
+    div += '<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'
+    div += '<span id="alert-data"></span>';
+    div += '</div>'
+    $('.alert-div').html(div);
+
+    alertContent = document.getElementById("alert-data")
+    if (total_votes == 0){
+      message = "You have not made any predictions. Do some predictions by selecting tournament participants and try again";
+      alertContent.innerHTML = message;
+      $('.alert').show();
+    }
+    else if (total_votes < maxVotes){
+      message = "You have not completed your predictions. Do some predictions by selecting tournament participants and try again";
+      alertContent.innerHTML = message;
+      $('.alert').show();
+    }
+    else{
+      $('#myModal').modal('show');
+    }
+    
   }
   
 </script>
-
 
 <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header">Predictions - <%= @competition.name %></h1>
   </div>
+</div>
+
+<div class="alert-div">
+
 </div>
 
 <div class="row">
@@ -107,6 +155,29 @@
   </div>
   <!-- /.col-lg-6 -->
 </div>
-<button class="btn btn-primary" type="submit">Submit Button</button>
+<button class="btn btn-primary" onclick="confirmAction();">Submit Button</button>
 <button class="btn btn-warning" onclick="resetTable()" >Reset Button</button>
 <button onclick="cancelEvent();" class="btn btn-danger" type="reset">Cancel Button</button>
+
+
+<!--CONFIRMATION POPUP BEGIN -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">
+          Confirmation
+        </h4>
+      </div>
+      <div class="modal-body">
+        <span style="text-align:center;">You are about to save your predictions. You can edit or cancel the operation later. Are you really very sure?</span>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="processVotes();" data-dismiss="modal">Okay</button>
+          <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--CONFIRMATION POPUP END -->
