@@ -9,20 +9,23 @@
 
   function selectParticipant(obj){
     var $btn = $(obj)
-    $item = $btn.closest('tr')
-    console.log($item);
+    $item = $btn.closest('tr');
     $otherTable = $('.participants').not( $btn.closest('tbody'));
-
-    //fa-angle-double-right
-    /* fade and move to other table */
     $item.fadeOut(function(){
-      /* switch button icon classes */
       $btn.find('span').toggleClass('fa-angle-double-right fa-angle-double-left')
       $otherTable.append($item);
-      /* is in new table, can fade in */
       $item.fadeIn()
     });       
   }
+
+  function createFormElements(){
+    spanElements = $('.my_votes').find("span");
+    for (var i=0; i <= spanElements.length - 1; i++){
+      userid = spanElements[i].getAttribute("userid");
+      console.log(userid);
+    }
+  }
+  
 </script>
 
 
@@ -91,7 +94,7 @@
                 <th style="text-align: center;">Action</th>
               </tr>
             </thead>
-            <tbody class="participants">
+            <tbody class="participants my_votes">
 
             </tbody>
           </table>
