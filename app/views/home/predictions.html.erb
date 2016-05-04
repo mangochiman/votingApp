@@ -1,4 +1,5 @@
 <script type="text/javascript">
+  var competitionID = '<%= params[:competition_id] %>';
   var maxVotes = parseInt('<%= @competition.max_votes %>');
 
   function resetTable(){
@@ -27,14 +28,17 @@
     
     form = document.createElement('form');
     form.action ='/home/create_votes';
+    form.method = 'POST'
     form.id = 'voters_data';
 
     for (var i=0; i <= spanElements.length - 1; i++){
       userid = spanElements[i].getAttribute("userid");
-      createInput(form, 'text', "user_ids[]", userid)
+      createInput(form, 'text', "participant_ids[]", userid);
     }
 
+    createInput(form, 'text', "competition_id", competitionID)
     document.getElementsByTagName('body')[0].appendChild(form);
+    form.submit();
   }
 
 

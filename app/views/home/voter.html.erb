@@ -57,8 +57,8 @@
                   <td><%= competition.max_votes %></td>
                   <td><%= competition.start_date %></td>
                   <td><%= competition.end_date %></td>
-                  <td><%= competition.tournament.name %></td>
                   <td><%= competition.total_voters.count %></td>
+                  <td><%= competition.tournament.name %></td>
                   <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Participate</button></td>
                   <td><button onmousedown="withdrawFromCompetition(<%= competition.voting_type_id %>)" class="btn btn-danger btn-block" type="button">Withdraw</button></td>
                 </tr>

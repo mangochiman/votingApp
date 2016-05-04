@@ -18,4 +18,24 @@ class HomeController < ApplicationController
     @tournament_participants  = @competition.tournament.participants
     render :layout => "voter"
   end
+
+  def create_votes
+    competition_id = params[:competition_id]
+    user_id = 111
+    ActiveRecord::Base.transaction do
+      params[:participant_ids].each do |participant|
+        vote = Vote.new
+        vote.user_id = user_id
+        vote.participant_id = participant
+        vote.voting_type_id = competition_id
+        vote.created_at = Time.now
+        vote.updated_at = Time.now
+        vote.save
+      end
+    end
+
+    flash[:notice] = "Thanks for making your predictions"
+    redirect_to("/voter") and return
+  end
+  
 end
