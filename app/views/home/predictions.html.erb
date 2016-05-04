@@ -11,14 +11,14 @@
     var $btn = $(obj)
     $item = $btn.closest('tr')
     console.log($item);
-    $myVotes = $('.my_votes');
+    $otherTable = $('.participants').not( $btn.closest('tbody'));
 
-
+    //fa-angle-double-right
     /* fade and move to other table */
     $item.fadeOut(function(){
       /* switch button icon classes */
-      //$btn.find('span').toggleClass('glyphicon-plus glyphicon-minus')
-      $myVotes.append($item);
+      $btn.find('span').toggleClass('fa-angle-double-right fa-angle-double-left')
+      $otherTable.append($item);
       /* is in new table, can fade in */
       $item.fadeIn()
     });       
@@ -51,14 +51,15 @@
                 <th style="text-align: center;">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="participants">
               <% @tournament_participants.each do |participant| %>
                 <tr>
                   <td><%= participant.phone_number %></td>
                   <td><%= participant.first_name %></td>
                   <td><%= participant.last_name %></td>
                   <td><%= participant.nick_name %></td>
-                  <td><button nick_name="<%= participant.nick_name %>" userid="<%= participant.user_id %>" onmousedown="selectParticipant(this);" class="btn btn-primary btn-block" type="button">Select >> </button></td>
+                  <td onmousedown="selectParticipant(this);" style="text-align: center; cursor: pointer;"><span userid="<%= participant.user_id %>" class="fa fa-angle-double-right"></span></td>
+
                 </tr>
               <% end %>
 
@@ -90,7 +91,7 @@
                 <th style="text-align: center;">Action</th>
               </tr>
             </thead>
-            <tbody class="my_votes">
+            <tbody class="participants">
 
             </tbody>
           </table>
