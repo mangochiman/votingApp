@@ -6,7 +6,23 @@
   function cancelEvent(){
     window.location = '/voter';
   }
-  
+
+  function selectParticipant(obj){
+    var $btn = $(obj)
+    $item = $btn.closest('tr')
+    console.log($item);
+    $myVotes = $('.my_votes');
+
+
+    /* fade and move to other table */
+    $item.fadeOut(function(){
+      /* switch button icon classes */
+      //$btn.find('span').toggleClass('glyphicon-plus glyphicon-minus')
+      $myVotes.append($item);
+      /* is in new table, can fade in */
+      $item.fadeIn()
+    });       
+  }
 </script>
 
 
@@ -74,7 +90,7 @@
                 <th style="text-align: center;">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="my_votes">
 
             </tbody>
           </table>
