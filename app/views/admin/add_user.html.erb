@@ -50,10 +50,13 @@
                 <input class="form-control" placeholder="Nick Name" name="nick_name"/>
               </div>
 
-              <!--<div class="form-group">
-                <label>Profile Pic</label>
-                <input type="file"/>
-              </div>-->
+              <div class="form-group">
+                <label>Admin?</label>
+                <select class="form-control" name="admin">
+                  <option>No</option>
+                  <option>Yes</option>
+                </select>
+              </div>
 
               <button type="submit" class="btn btn-default">Submit Button</button>
               <button type="reset" class="btn btn-default">Reset Button</button>
@@ -84,6 +87,7 @@
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>NickName</th>
+                      <th>Role</th>
                       <th>&nbsp;</th>
                       <th>&nbsp;</th>
                     </tr>
@@ -91,15 +95,16 @@
                   <tbody>
                     <% count = 0 %>
                     <% @users.each do |user| %>
-                    <tr>
-                      <td><%= count= count + 1 %></td>
-                      <td><%= user.phone_number %></td>
-                      <td><%= user.first_name %></td>
-                      <td><%= user.last_name %></td>
-                      <td><%= user.nick_name %></td>
-                      <td><button onclick="editUser('<%= user.user_id %>')" class="btn btn-warning btn-block" type="button">Edit</button></td>
-                      <td><button class="btn btn-danger btn-block" type="button">Delete</button></td>
-                    </tr>
+                      <tr>
+                        <td><%= count= count + 1 %></td>
+                        <td><%= user.phone_number %></td>
+                        <td><%= user.first_name %></td>
+                        <td><%= user.last_name %></td>
+                        <td><%= user.nick_name %></td>
+                        <td><%= user.user_roles.last.role rescue '' %></td>
+                        <td><button onclick="editUser('<%= user.user_id %>')" class="btn btn-warning btn-block" type="button">Edit</button></td>
+                        <td><button class="btn btn-danger btn-block" type="button">Delete</button></td>
+                      </tr>
                     <% end %>
                   </tbody>
                 </table>

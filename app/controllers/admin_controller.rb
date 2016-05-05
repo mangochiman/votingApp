@@ -20,6 +20,17 @@ class AdminController < ApplicationController
     user.nick_name = nick_name
     user.save!
 
+    if params[:admin].upcase == 'YES'
+      role = 'admin'
+    else
+      role = 'user'
+    end
+
+    user_role = UserRole.new
+    user_role.user_id = user.user_id
+    user_role.role = role
+    user_role.save
+    
     flash[:notice] = "You have successfully added a new user"
     redirect_to("/add_user") and return
   end
@@ -41,6 +52,22 @@ class AdminController < ApplicationController
     user.nick_name = nick_name
     user.save!
 
+    if params[:admin].upcase == 'YES'
+      role = 'admin'
+    else
+      role = 'user'
+    end
+    ActiveRecord::Base.transaction do
+      user_role = user.user_roles.last
+      user_role.delete unless user_role.blank?
+      
+      user_role = UserRole.new
+      user_role.user_id = params[:user_id]
+      user_role.role = role
+      user_role.save
+    end
+    
+    
     flash[:notice] = "You have successfully updated details #{first_name} #{last_name}"
     redirect_to("/add_user") and return
   end
@@ -204,7 +231,7 @@ class AdminController < ApplicationController
   end
   
   def add_participants
-     @tournaments = Tournament.all
+    @tournaments = Tournament.all
   end
 
   def add_competition
