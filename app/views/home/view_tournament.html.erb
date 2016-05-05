@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header"><%= "#{@tournament.name} (#{@tournament.start_date.to_date.strftime('%d/%b/%Y') rescue @tournament.start_date} - #{@tournament.end_date.to_date.strftime('%d/%b/%Y') rescue @tournament.end_date})" %></h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-bell fa-tasks"></i> Select Task
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          
+          <a class="list-group-item" href="#">
+            <i class="fa fa-comment fa-tasks"></i> View Participants
+          </a>
+
+          <a class="list-group-item" href="#">
+            <i class="fa fa-twitter fa-tasks"></i> View Results
+          </a>
+
+          <a class="list-group-item" href="#">
+            <i class="fa fa-envelope fa-tasks"></i> View Predictions
+          </a>
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-bar-chart-o fa-columns"></i> View
+        <div class="pull-right">
+          
+        </div>
+      </div>
+
+      <div class="panel-body">
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- /.col-lg-4 -->
+</div>

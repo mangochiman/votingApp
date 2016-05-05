@@ -85,7 +85,7 @@
                 <ul class="nav nav-second-level">
                   <% Tournament.all.each do |tournament| %>
                     <li>
-                      <a href="/select_tourney/<%= tournament.tournament_id %>"><%= tournament.name %></a>
+                      <a href="/view_tournament/<%= tournament.tournament_id %>"><%= tournament.name %></a>
                     </li>
                   <% end %>
                 </ul>

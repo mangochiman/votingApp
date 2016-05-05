@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 
   def access_denied
     #flash[:error] = 'Oops. You need to login before you can view that page.'
-    redirect_to('/first_login') and return if session[:first_login]
-    redirect_to ("/login") and return
+    #redirect_to('/first_login') and return if session[:first_login]
+    #redirect_to ("/login") and return
   end
 end

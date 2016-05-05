@@ -37,5 +37,10 @@ class HomeController < ApplicationController
     flash[:notice] = "Thanks for making your predictions"
     redirect_to("/voter") and return
   end
+
+  def view_tournament
+    @tournament = Tournament.find(params[:tournament_id])
+    render :layout => 'voter'
+  end
   
 end
