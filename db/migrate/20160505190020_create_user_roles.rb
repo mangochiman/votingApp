@@ -1,7 +1,8 @@
 class CreateUserRoles < ActiveRecord::Migration
   def self.up
-    create_table :user_roles do |t|
-
+    create_table :user_roles, :id => false do |t|
+      t.integer :user_id
+      t.string :role
       t.timestamps
     end
   end

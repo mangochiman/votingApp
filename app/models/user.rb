@@ -6,7 +6,9 @@ class User < ActiveRecord::Base
   set_primary_key :user_id
 
   #before_save :set_password
-
+  has_many :user_roles, :foreign_key => :user_id
+  has_many :suggestions, :foreign_key => :user_id
+  
   cattr_accessor :current_user
 
   def try_to_login
