@@ -40,6 +40,18 @@ class HomeController < ApplicationController
 
   def view_tournament
     @tournament = Tournament.find(params[:tournament_id])
+    @competition_hash = {}
+    @users = {}
+    
+    @tournament.competitions.each do |competition|
+      @competition_hash[competition.voting_type_id] = competition.name
+    end
+    
+    
+    User.all.each do |user|
+      @users[user.user_id] = user.first_name.to_s + " " + user.last_name.to_s
+    end
+
     render :layout => 'voter'
   end
 

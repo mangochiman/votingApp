@@ -1,25 +1,7 @@
 <script type="text/javascript">
   var tournamentID = '<%= params[:tournament_id] %>';
-
-  /*
- <div class="list-group">
-
-          <a class="list-group-item" href="#" onclick="viewParticipants();">
-            <i class="fa fa-comment fa-tasks"></i> View Participants
-          </a>
-
-          <a class="list-group-item" href="#" onclick="viewResults();">
-            <i class="fa fa-twitter fa-tasks"></i> View Results
-          </a>
-
-          <a class="list-group-item" href="#" onclick="viewPredictions();">
-            <i class="fa fa-envelope fa-tasks"></i> View Predictions
-          </a>
-
-        </div>
-
-   **/
-
+  var competitionsHash = JSON.parse('<%= @competition_hash.to_json %>');
+  var usersHash = JSON.parse('<%= @users.to_json %>');
 
   function viewParticipants(){
     jQuery.ajax({
@@ -80,14 +62,41 @@
   }
 
   function viewPredictions(){
-    tournament_id = obj.getAttribute('tournament_id')
     jQuery.ajax({
       type: "POST",
       url: "/home/render_tournament_predictions",
       data: "tournament_id="+ tournamentID,
       success: function(results){
         results = eval('(' + results + ')');
-        console.log(results);
+        html = "<table>";
+        for (var competitionID in results){
+          competitionName = competitionsHash[competitionID];
+          html += '<tr>';
+          html += '<td> Competition Name: ' + competitionName + '</td>';
+          html += '</tr>';
+
+          for (var voterID in results[competitionID]){
+            votersName = usersHash[voterID];
+            html += '<tr>';
+            html += '<td> Voters Name: ' + votersName + '</td>';
+            html += '</tr>';
+            console.log("Voter Name = " + votersName)
+            votes = results[competitionID][voterID];
+
+            my_votes = []
+            for (var i=0; i<= votes.length - 1; i++){
+              participantName = usersHash[votes[i]];
+              my_votes.push(participantName)
+            }
+            html += '<tr>';
+            html += '<td>' + my_votes.join(', ') + '</td>';
+            html += '</tr>';
+
+          }
+        }
+        html += '</table>';
+        
+        $('.view').html(html);
       }
 
     });
