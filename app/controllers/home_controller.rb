@@ -15,9 +15,10 @@ class HomeController < ApplicationController
 
   def predictions
     @competition = Competition.find(params[:competition_id])
-    @tournament_participants  = @competition.tournament.participants
     @my_predictions = session[:user].votes.find(:all, :conditions => ["voting_type_id =?", 
         params[:competition_id]]).collect{|v|v.participant}.compact
+    user_ids = @my_predictions.map(&:user_id)
+    @tournament_participants  = @competition.tournament.participants.find(:all, :conditions => ["tournament_participants.user_id NOT IN (?)", user_ids])
     render :layout => "voter"
   end
 
