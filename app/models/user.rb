@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   #before_save :set_password
   has_many :user_roles, :foreign_key => :user_id
   has_many :suggestions, :foreign_key => :user_id
-  
+  has_many :votes, :foreign_key => :user_id
   cattr_accessor :current_user
 
   def try_to_login
@@ -47,4 +47,9 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(password+salt)
   end
 
+  def role
+    u_role = self.user_roles.last
+    return "" if u_role.blank?
+    return u_role.role
+  end
 end

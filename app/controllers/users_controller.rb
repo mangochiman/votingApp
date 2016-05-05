@@ -32,7 +32,12 @@ class UsersController < ApplicationController
     logged_in_user = User.authenticate(params[:phone_number], params[:password])
     if logged_in_user
       session[:user] = user
-      redirect_to("/") and return
+      if user.role.downcase == 'admin'
+        redirect_to("/") and return
+      else
+        redirect_to("/voter") and return
+      end
+      
     else
       flash[:notice] = "Wrong Password"
       redirect_to("/login") and return

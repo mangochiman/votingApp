@@ -189,7 +189,18 @@
               </tr>
             </thead>
             <tbody class="participants my_votes">
+                <% count = 0 %>
+              <% @my_predictions.each do |participant| %>
+                <tr>
+                  <td class="voted_index"><%= count = count + 1 %></td>
+                  <td><%= participant.phone_number %></td>
+                  <td><%= participant.first_name %></td>
+                  <td><%= participant.last_name %></td>
+                  <td><%= participant.nick_name %></td>
+                  <td onmousedown="selectParticipant(this);" style="text-align: center; cursor: pointer;"><span userid="<%= participant.user_id %>" class="fa fa-angle-double-left"></span></td>
 
+                </tr>
+              <% end %>
             </tbody>
           </table>
         </div>

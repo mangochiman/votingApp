@@ -16,12 +16,14 @@ class HomeController < ApplicationController
   def predictions
     @competition = Competition.find(params[:competition_id])
     @tournament_participants  = @competition.tournament.participants
+    @my_predictions = session[:user].votes.find(:all, :conditions => ["voting_type_id =?", 
+        params[:competition_id]]).collect{|v|v.participant}.compact
     render :layout => "voter"
   end
 
   def create_votes
     competition_id = params[:competition_id]
-    user_id = 111
+    user_id = session[:user].user_id
     ActiveRecord::Base.transaction do
       params[:participant_ids].each do |participant|
         vote = Vote.new
