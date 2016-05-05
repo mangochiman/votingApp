@@ -1,3 +1,84 @@
+<script type="text/javascript">
+  var tournamentID = '<%= params[:tournament_id] %>';
+
+  /*
+ <div class="list-group">
+
+          <a class="list-group-item" href="#" onclick="viewParticipants();">
+            <i class="fa fa-comment fa-tasks"></i> View Participants
+          </a>
+
+          <a class="list-group-item" href="#" onclick="viewResults();">
+            <i class="fa fa-twitter fa-tasks"></i> View Results
+          </a>
+
+          <a class="list-group-item" href="#" onclick="viewPredictions();">
+            <i class="fa fa-envelope fa-tasks"></i> View Predictions
+          </a>
+
+        </div>
+
+   **/
+
+
+  function viewParticipants(){
+    jQuery.ajax({
+      type: "POST",
+      url: "/home/render_tournament_participants",
+      data: "tournament_id="+ tournamentID,
+      success: function(results){
+        results = eval('(' + results + ')');
+        html = '<div class="list-group">';
+
+        for (var i in results){
+          firstName = results[i]["first_name"];
+          lastName = results[i]["last_name"];
+          nickName = results[i]["nick_name"];
+          phoneNumber = results[i]["phone_number"];
+          html += '<a class="list-group-item" href="#">';
+          html += '<i class="fa"></i>' + firstName + ' ' +  lastName;
+          html += '<span class="pull-right text-muted small"><em>' + phoneNumber + '</em></span>'
+          html += '</a>'
+        }
+        
+        html += '</div>';
+        
+        $('.view').html(html);
+        
+        console.log(results);
+      }
+
+    });
+  }
+
+  function viewResults(){
+    jQuery.ajax({
+      type: "POST",
+      url: "/home/render_tournament_results",
+      data: "tournament_id="+ tournamentID,
+      success: function(results){
+        results = eval('(' + results + ')');
+        console.log(results);
+      }
+
+    });
+  }
+
+  function viewPredictions(){
+    tournament_id = obj.getAttribute('tournament_id')
+    jQuery.ajax({
+      type: "POST",
+      url: "/home/render_tournament_predictions",
+      data: "tournament_id="+ tournamentID,
+      success: function(results){
+        results = eval('(' + results + ')');
+        console.log(results);
+      }
+
+    });
+  }
+  
+</script>
 <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header"><%= "#{@tournament.name} (#{@tournament.start_date.to_date.strftime('%d/%b/%Y') rescue @tournament.start_date} - #{@tournament.end_date.to_date.strftime('%d/%b/%Y') rescue @tournament.end_date})" %></h1>
@@ -12,21 +93,21 @@
       </div>
       <div class="panel-body">
         <div class="list-group">
-          
-          <a class="list-group-item" href="#">
+
+          <a class="list-group-item" href="#" onclick="viewParticipants();">
             <i class="fa fa-comment fa-tasks"></i> View Participants
           </a>
 
-          <a class="list-group-item" href="#">
+          <a class="list-group-item" href="#" onclick="viewResults();">
             <i class="fa fa-twitter fa-tasks"></i> View Results
           </a>
 
-          <a class="list-group-item" href="#">
+          <a class="list-group-item" href="#" onclick="viewPredictions();">
             <i class="fa fa-envelope fa-tasks"></i> View Predictions
           </a>
-          
+
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -35,12 +116,9 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <i class="fa fa-bar-chart-o fa-columns"></i> View
-        <div class="pull-right">
-          
-        </div>
       </div>
 
-      <div class="panel-body">
+      <div class="panel-body view">
 
       </div>
 

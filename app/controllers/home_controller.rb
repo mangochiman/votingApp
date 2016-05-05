@@ -42,5 +42,61 @@ class HomeController < ApplicationController
     @tournament = Tournament.find(params[:tournament_id])
     render :layout => 'voter'
   end
+
+  def render_tournament_participants
+    tournament = Tournament.find(params[:tournament_id])
+    participants = tournament.participants
+    data = {}
+
+    participants.each do |participant|
+      participant_id = participant.user_id
+      data[participant_id] = {}
+      data[participant_id]["first_name"] = participant.first_name
+      data[participant_id]["last_name"] = participant.last_name
+      data[participant_id]["nick_name"] = participant.nick_name
+      data[participant_id]["phone_number"] = participant.phone_number
+    end
+    
+    render :text => data.to_json and return
+  end
+
+  def render_tournament_results
+    tournament = Tournament.find(params[:tournament_id])
+    tournament_results = tournament.tournament_results
+    data = {}
+    
+    tournament_results.each do |tournament_result|
+      participant = tournament_result.participant
+      participant_id = participant.user_id
+      data[participant_id] = {}
+      data[participant_id]["first_name"] = participant.first_name
+      data[participant_id]["last_name"] = participant.last_name
+      data[participant_id]["nick_name"] = participant.nick_name
+      data[participant_id]["phone_number"] = participant.phone_number
+      data[participant_id]["result"] = tournament_result.result
+    end
+
+    render :text => data.to_json and return
+  end
+
+  def render_tournament_predictions
+    tournament = Tournament.find(params[:tournament_id])
+    tournament_competitions = tournament.competitions
+
+    data = {}
+    tournament_competitions.each do |competition|
+      competition_id = competition.voting_type_id
+      data[competition_id] = {}
+      competition.votes.each do |vote|
+        voter = vote.user_id
+        participant_id = vote.participant_id
+
+        data[competition_id][voter] = [] if data[competition_id][voter].blank?
+        data[competition_id][voter] << participant_id
+      end
+    end
+
+    render :text => data.to_json and return
+  end
   
 end
