@@ -68,18 +68,15 @@
       data: "tournament_id="+ tournamentID,
       success: function(results){
         results = eval('(' + results + ')');
-        html = "<table>";
+        html = "<table class='table table-striped table-bordered table-hover'>";
         for (var competitionID in results){
           competitionName = competitionsHash[competitionID];
-          html += '<tr>';
-          html += '<td> Competition Name: ' + competitionName + '</td>';
+          html += '<tr style="text-align: center;">';
+          html += '<td> Competition Name: <span style="font-weight: bold;">' + competitionName + '</span></td>';
           html += '</tr>';
 
           for (var voterID in results[competitionID]){
             votersName = usersHash[voterID];
-            html += '<tr>';
-            html += '<td> Voters Name: ' + votersName + '</td>';
-            html += '</tr>';
             console.log("Voter Name = " + votersName)
             votes = results[competitionID][voterID];
 
@@ -89,7 +86,7 @@
               my_votes.push(participantName)
             }
             html += '<tr>';
-            html += '<td>' + my_votes.join(', ') + '</td>';
+            html += '<td>' + '<span style="font-weight: bold;">'  + votersName + ' : </span><i>' + my_votes.join(', ') + '</i></td>';
             html += '</tr>';
 
           }
