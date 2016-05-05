@@ -1,13 +1,13 @@
 class UsersController < ApplicationController
-  skip_before_filter :authenticate_user, :only => [:login, :logout, :authenticate_client, :first_login, :create_password]
+  skip_before_filter :authenticate_user, :only => [:login, :logout, :authenticate_client, :create_password]
+  skip_before_filter :check_if_user_has_password, :only => [:login, :logout, :authenticate_client, :create_password, :first_login]
   
   def login
     render :layout => false
   end
 
   def logout
-    session.delete(:first_login)
-    session.delete(:user)
+    reset_session
     flash[:notice] = "You have been logged out"
     redirect_to("/login")
   end
@@ -24,14 +24,13 @@ class UsersController < ApplicationController
     end
 
     if user && user.password.blank?
-      session[:first_login] = user
+      session[:user] = user
       flash[:notice] = "This is your first login. Create your password to secure your account"
       redirect_to("/first_login") and return
     end
 
     logged_in_user = User.authenticate(params[:phone_number], params[:password])
     if logged_in_user
-      session.delete(:first_login)
       session[:user] = user
       redirect_to("/") and return
     else
@@ -41,8 +40,7 @@ class UsersController < ApplicationController
   end
 
   def first_login
-    redirect_to("/login") if session[:first_login].blank?
-    @user = session[:first_login]
+    @user = session[:user]
     render :layout => 'voter'
   end
 
@@ -55,7 +53,7 @@ class UsersController < ApplicationController
       redirect_to("/first_login") and return
     end
 
-    user = session[:first_login]
+    user = session[:user]
     salt = user.salt
     salt = User.random_string(10) if salt.blank?
     

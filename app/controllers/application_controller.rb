@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   skip_before_filter :verify_authenticity_token
-  before_filter :authenticate_user
+  before_filter :authenticate_user , :check_if_user_has_password
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
   def authenticate_user
@@ -16,7 +16,16 @@ class ApplicationController < ActionController::Base
   end
 
   def access_denied
-    redirect_to('/first_login') and return if session[:first_login]
     redirect_to ("/login") and return
   end
+
+  def check_if_user_has_password
+    unless session[:user].blank?
+      if session[:user].password.blank?
+        redirect_to('/first_login') and return
+        return false
+      end
+    end
+  end
+
 end
