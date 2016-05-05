@@ -20,7 +20,7 @@ ActionController::Routing::Routes.draw do |map|
   map.voter '/voter', :controller => 'home', :action => 'voter'
   map.new_suggestions '/new_suggestions', :controller => 'home', :action => 'new_suggestions'
   map.predictions '/predictions/:competition_id', :controller => 'home', :action => 'predictions'
-  map.first_login '/first_login', :controller => 'home', :action => 'first_login'
+  map.first_login '/first_login', :controller => 'users', :action => 'first_login'
   map.select_tourney '/view_tournament/:tournament_id', :controller => 'home', :action => 'view_tournament'
 
   # Sample of regular route:

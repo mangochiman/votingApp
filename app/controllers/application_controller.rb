@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   skip_before_filter :verify_authenticity_token
   before_filter :authenticate_user
   # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
+  filter_parameter_logging :password
   def authenticate_user
     user = User.find(session[:user].user_id) rescue nil
     return true unless user.blank?
@@ -16,8 +16,7 @@ class ApplicationController < ActionController::Base
   end
 
   def access_denied
-    #flash[:error] = 'Oops. You need to login before you can view that page.'
-    #redirect_to('/first_login') and return if session[:first_login]
-    #redirect_to ("/login") and return
+    redirect_to('/first_login') and return if session[:first_login]
+    redirect_to ("/login") and return
   end
 end

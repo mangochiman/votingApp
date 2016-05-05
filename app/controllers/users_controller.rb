@@ -1,11 +1,14 @@
 class UsersController < ApplicationController
-  skip_before_filter :authenticate_user, :only => [:login, :authenticate_client, :first_login]
+  skip_before_filter :authenticate_user, :only => [:login, :logout, :authenticate_client, :first_login, :create_password]
   
   def login
     render :layout => false
   end
 
   def logout
+    session.delete(:first_login)
+    session.delete(:user)
+    flash[:notice] = "You have been logged out"
     redirect_to("/login")
   end
 
@@ -14,17 +17,16 @@ class UsersController < ApplicationController
   end
 
   def authenticate_client
-    raise params.inspect
     user = User.find_by_phone_number(params[:phone_number])
     if !user
-      flash[:notice] = "<b>#{params[:phone_number]}</b> is not registered in our database"
+      flash[:notice] = "The phone number entered does not exist in our database"
       redirect_to("/login") and return
     end
 
     if user && user.password.blank?
       session[:first_login] = user
       flash[:notice] = "This is your first login. Create your password to secure your account"
-      redirect_to("/first_login")
+      redirect_to("/first_login") and return
     end
 
     logged_in_user = User.authenticate(params[:phone_number], params[:password])
@@ -33,8 +35,8 @@ class UsersController < ApplicationController
       session[:user] = user
       redirect_to("/") and return
     else
-      flash[:error] = "Invalid username or password"
-      redirect_to :controller => "user", :action => "login" and return
+      flash[:notice] = "Wrong Password"
+      redirect_to("/login") and return
     end
   end
 
@@ -57,7 +59,7 @@ class UsersController < ApplicationController
     salt = user.salt
     salt = User.random_string(10) if salt.blank?
     
-    user.password = password
+    user.password = User.encrypt(password, salt)
     user.salt = salt if user.salt.blank?
     user.save
     

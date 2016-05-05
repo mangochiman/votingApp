@@ -30,25 +30,36 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script type="text/javascript">
+      function submitLoginForm(){
+        document.getElementById("loginForm").submit();
+      }
+    </script>
+
   </head>
 
   <body>
 
     <div class="container">
+
+      <% if flash[:notice] %>
+        <br />
+        <div class="col-md-4 col-md-offset-4">
+          <div class="alert alert-success alert-dismissable">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            <%= flash[:notice] %>
+          </div>
+        </div>
+      <% end %>
+
       <div class="row">
         <div class="col-md-4 col-md-offset-4">
           <div class="login-panel panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">Please Sign In</h3>
             </div>
-            <% if flash[:notice] %>
-              <div class="alert alert-success alert-dismissable">
-                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                <%= flash[:notice] %>
-              </div>
-            <% end %>
             <div class="panel-body">
-              <form role="form" action="/users/authenticate_client" method="POST">
+              <form role="form" action="/users/authenticate_client" method="POST" id="loginForm">
                 <fieldset>
                   <div class="form-group">
                     <input class="form-control" placeholder="Phone #" name="phone_number" type="phone" autofocus />
@@ -62,7 +73,7 @@
                     </label>
                   </div>
                   <!-- Change this to a button or input when using this as a form -->
-                  <a href="/" class="btn btn-lg btn-success btn-block">Login</a>
+                  <a href="#" class="btn btn-lg btn-success btn-block" onclick="submitLoginForm();">Login</a>
                 </fieldset>
               </form>
             </div>
