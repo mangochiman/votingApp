@@ -63,10 +63,13 @@ class HomeController < ApplicationController
   def render_tournament_results
     tournament = Tournament.find(params[:tournament_id])
     tournament_results = tournament.tournament_results
+    participants = tournament.participants
+
     data = {}
     
     tournament_results.each do |tournament_result|
       participant = tournament_result.participant
+      participants  = participants - [participant]
       participant_id = participant.user_id
       data[participant_id] = {}
       data[participant_id]["first_name"] = participant.first_name
@@ -76,6 +79,16 @@ class HomeController < ApplicationController
       data[participant_id]["result"] = tournament_result.result
     end
 
+    participants.each do |participant|
+      participant_id = participant.user_id
+      data[participant_id] = {}
+      data[participant_id]["first_name"] = participant.first_name
+      data[participant_id]["last_name"] = participant.last_name
+      data[participant_id]["nick_name"] = participant.nick_name
+      data[participant_id]["phone_number"] = participant.phone_number
+      data[participant_id]["result"] = "??"
+    end
+    
     render :text => data.to_json and return
   end
 

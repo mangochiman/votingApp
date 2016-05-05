@@ -37,7 +37,7 @@
           phoneNumber = results[i]["phone_number"];
           html += '<a class="list-group-item" href="#">';
           html += '<i class="fa"></i>' + firstName + ' ' +  lastName;
-          html += '<span class="pull-right text-muted small"><em>' + phoneNumber + '</em></span>'
+          html += '<span class="pull-right small"><em>' + phoneNumber + '</em></span>'
           html += '</a>'
         }
         
@@ -45,7 +45,6 @@
         
         $('.view').html(html);
         
-        console.log(results);
       }
 
     });
@@ -58,7 +57,23 @@
       data: "tournament_id="+ tournamentID,
       success: function(results){
         results = eval('(' + results + ')');
-        console.log(results);
+        html = '<div class="list-group">';
+
+        for (var i in results){
+          firstName = results[i]["first_name"];
+          lastName = results[i]["last_name"];
+          nickName = results[i]["nick_name"];
+          result = results[i]["result"];
+          
+          html += '<a class="list-group-item" href="#">';
+          html += '<i class="fa"></i>' + firstName + ' ' +  lastName;
+          html += '<span class="pull-right small"><em>' + result + '</em></span>'
+          html += '</a>'
+        }
+
+        html += '</div>';
+
+        $('.view').html(html);
       }
 
     });
