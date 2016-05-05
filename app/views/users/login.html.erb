@@ -41,8 +41,14 @@
             <div class="panel-heading">
               <h3 class="panel-title">Please Sign In</h3>
             </div>
+            <% if flash[:notice] %>
+              <div class="alert alert-success alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <%= flash[:notice] %>
+              </div>
+            <% end %>
             <div class="panel-body">
-              <form role="form" action="#">
+              <form role="form" action="/users/authenticate_client" method="POST">
                 <fieldset>
                   <div class="form-group">
                     <input class="form-control" placeholder="Phone #" name="phone_number" type="phone" autofocus />

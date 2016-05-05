@@ -19,7 +19,9 @@ ActionController::Routing::Routes.draw do |map|
   map.suggestions '/suggestions', :controller => 'admin', :action => 'suggestions'
   map.voter '/voter', :controller => 'home', :action => 'voter'
   map.new_suggestions '/new_suggestions', :controller => 'home', :action => 'new_suggestions'
-  map.new_suggestions '/predictions/:competition_id', :controller => 'home', :action => 'predictions'
+  map.predictions '/predictions/:competition_id', :controller => 'home', :action => 'predictions'
+  map.first_login '/first_login', :controller => 'home', :action => 'first_login'
+
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action

@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header"><%= "#{@user.first_name} #{@user.last_name} " %>Create Your Password</h1>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        New Password
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <% if flash[:notice] %>
+              <div class="alert alert-success alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <%= flash[:notice] %>
+              </div>
+            <% end %>
+            <form role="form" action="/home/create_password" method="POST">
+              
+              <div class="form-group">
+                <label>New Password</label>
+                <input class="form-control" placeholder="First Name" name="password" type="password"/>
+              </div>
+
+              <div class="form-group">
+                <label>Confirm Password</label>
+                <input class="form-control" placeholder="Last Name" name="confirm_password" type="password"/>
+              </div>
+
+              <button type="submit" class="btn btn-default">Submit Button</button>
+              <button type="reset" class="btn btn-default">Reset Button</button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
