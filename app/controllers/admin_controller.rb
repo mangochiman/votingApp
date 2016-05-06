@@ -239,7 +239,7 @@ class AdminController < ApplicationController
   end
 
   def suggestions
-
+    @suggestions = Suggestion.find(:all, :order => 'created_at DESC')
   end
   
 end
