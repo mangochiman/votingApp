@@ -41,7 +41,35 @@ class UsersController < ApplicationController
 
     redirect_to("/user_profile") and return
   end
-  
+
+  def change_password
+    @user = User.find(session[:user])
+    render :layout => 'voter' if @user.role.downcase == 'user'
+  end
+
+  def update_password
+    user = User.find(session[:user])
+    old_password = params[:old_password]
+    password = params[:password]
+    password_confirm = params[:confirm_password]
+
+    check_old_password = User.authenticate(user.phone_number, old_password)
+    errors = []
+    errors << "Old password is not correct" if !check_old_password
+    errors << "Password Mismatch" if (password != password_confirm)
+
+    unless errors.blank?
+      flash[:notice] = errors.join(', ')
+      redirect_to("/change_password") and return
+    end
+
+    user.password = User.encrypt(password, user.salt)
+    user.save
+
+    flash[:notice] = "You have successfully changed your password"
+    redirect_to("/user_profile") and return
+  end
+
   def authenticate_client
     user = User.find_by_phone_number(params[:phone_number])
     if !user
