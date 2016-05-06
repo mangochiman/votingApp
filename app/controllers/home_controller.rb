@@ -6,10 +6,13 @@ class HomeController < ApplicationController
 
   def voter
     @competitions = Competition.all
+    @user = session[:user]
     render :layout => "voter"
   end
 
   def new_suggestions
+    user = User.find(session[:user])
+    @suggestions = user.suggestions
     render :layout => "voter"
   end
 
@@ -17,7 +20,9 @@ class HomeController < ApplicationController
     @competition = Competition.find(params[:competition_id])
     @my_predictions = session[:user].votes.find(:all, :conditions => ["voting_type_id =?", 
         params[:competition_id]]).collect{|v|v.participant}.compact
+
     user_ids = @my_predictions.map(&:user_id)
+    user_ids = [0] if user_ids.blank?
     @tournament_participants  = @competition.tournament.participants.find(:all, :conditions => ["tournament_participants.user_id NOT IN (?)", user_ids])
     render :layout => "voter"
   end
@@ -126,5 +131,32 @@ class HomeController < ApplicationController
 
     render :text => data.to_json and return
   end
-  
+
+  def withdraw_from_competition
+    user = session[:user]
+    competition_id = params[:competition_id]
+    user_votes = user.votes.find(:all, :conditions => ["voting_type_id =?", competition_id])
+    ActiveRecord::Base.transaction do
+      user_votes.each do |vote|
+        vote.delete
+      end
+    end
+    render :text => true and return
+  end
+
+  def create_suggestions
+    title = params[:title]
+    data = params[:data]
+    user_id = session[:user].user_id
+
+    suggestion = Suggestion.new
+    suggestion.title = title
+    suggestion.data = data
+    suggestion.user_id = user_id
+    suggestion.save!
+
+    flash[:notice] = "Thanks for your suggestions. We will look at them shortly"
+    redirect_to("/new_suggestions")
+  end
+
 end

@@ -52,4 +52,11 @@ class User < ActiveRecord::Base
     return "" if u_role.blank?
     return u_role.role
   end
+
+  def participated_in_competition(competition_id)
+    votes = self.votes.find(:all, :conditions => ["voting_type_id =?", competition_id])
+    return false if votes.blank?
+    return true
+  end
+  
 end

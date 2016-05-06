@@ -1,9 +1,27 @@
 <script type="text/javascript">
+  var currentCompetitionID;
   
   function participateCompetition(competitionID){
     window.location = "/predictions/" + competitionID;
   }
-  
+
+  function confirmAction(competitionID){
+    currentCompetitionID = competitionID
+    $('#myModal').modal('show');
+  }
+
+  function withdrawFromCompetition(){
+    jQuery.ajax({
+      type: "POST",
+      url: "/home/withdraw_from_competition",
+      data: "competition_id=" + currentCompetitionID,
+      success: function(){
+        window.location = '/voter';
+      }
+
+    });
+  }
+
 </script>
 <style type="text/css">
   #nick_name, #competition_name{
@@ -59,8 +77,18 @@
                   <td><%= competition.end_date %></td>
                   <td><%= competition.total_voters.count %></td>
                   <td><%= competition.tournament.name %></td>
-                  <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Participate</button></td>
-                  <td><button onmousedown="withdrawFromCompetition(<%= competition.voting_type_id %>)" class="btn btn-danger btn-block" type="button">Withdraw</button></td>
+                  <% if @user.participated_in_competition(competition) %>
+                    <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Edit Predictions</button></td>
+                  <% else %>
+                    <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Participate</button></td>
+                  <% end %>
+
+                  <% if @user.participated_in_competition(competition) %>
+                    <td><button onmousedown="confirmAction(<%= competition.voting_type_id %>)" class="btn btn-danger btn-block" type="button">Withdraw</button></td>
+                  <% else %>
+                    <td><button class="btn btn-danger btn-block disabled" type="button">Withdraw</button></td>
+                  <% end %>
+
                 </tr>
               <% end %>
             </tbody>
@@ -74,3 +102,25 @@
   <!-- /.col-lg-6 -->
 </div>
 
+<!--CONFIRMATION POPUP BEGIN -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">
+          Withdraw Confirmation
+        </h4>
+      </div>
+      <div class="modal-body">
+        <span style="text-align:center;">You are about to withdraw  from this competition. This means you are going to lose all predictions you made in this
+          competition. You can not undo this action. Are you really very sure?</span>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="withdrawFromCompetition();" data-dismiss="modal">Okay</button>
+          <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--CONFIRMATION POPUP END -->
