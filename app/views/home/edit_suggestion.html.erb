@@ -1,0 +1,58 @@
+<script type="text/javascript">
+  function cancelEvent(){
+    window.location = "/new_suggestions";
+  }
+</script>
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Editing Suggestion</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+
+<!-- /.row -->
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Edit Suggestion
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <% if flash[:notice] %>
+              <div class="alert alert-success alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <%= flash[:notice] %>
+              </div>
+            <% end %>
+            <form role="form" action="/home/update_suggestion">
+
+              <div class="form-group">
+                <label>Title</label>
+                <input class="form-control" placeholder="Title" value="<%= @suggestion.title %>" name="title"/>
+              </div>
+
+              <div class="form-group">
+                <label>Suggestion</label>
+                <textarea rows="3" class="form-control" placeholder="Suggestions" name="data"><%= @suggestion.data %></textarea>
+              </div>
+
+              <%= hidden_field_tag("suggestion_id", params[:suggestion_id]) %>
+              <button type="submit" class="btn btn-primary">Submit Button</button>
+              <button type="reset" class="btn btn-warning">Reset Button</button>
+              <button type="reset" class="btn btn-danger" onclick="cancelEvent();">Cancel Button</button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- /.row -->

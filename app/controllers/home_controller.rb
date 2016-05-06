@@ -159,4 +159,25 @@ class HomeController < ApplicationController
     redirect_to("/new_suggestions")
   end
 
+  def edit_suggestion
+    @suggestion = Suggestion.find(params[:suggestion_id])
+  end
+
+  def update_suggestion
+    title = params[:title]
+    data = params[:data]
+    suggestion = Suggestion.find(params[:suggestion_id])
+    suggestion.title = title
+    suggestion.data = data
+    suggestion.save!
+    flash[:notice] = "You have successfully edited your suggestion. We will look at it shortly"
+    redirect_to("/new_suggestions") and return
+  end
+
+  def delete_suggestion
+    suggestion = Suggestion.find(params[:suggestion_id])
+    suggestion.delete
+    render :text => "true" and return
+  end
+  
 end

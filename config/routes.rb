@@ -21,7 +21,8 @@ ActionController::Routing::Routes.draw do |map|
   map.new_suggestions '/new_suggestions', :controller => 'home', :action => 'new_suggestions'
   map.predictions '/predictions/:competition_id', :controller => 'home', :action => 'predictions'
   map.first_login '/first_login', :controller => 'users', :action => 'first_login'
-  map.select_tourney '/view_tournament/:tournament_id', :controller => 'home', :action => 'view_tournament'
+  map.view_tournament '/view_tournament/:tournament_id', :controller => 'home', :action => 'view_tournament'
+  map.edit_suggestion '/edit_suggestion/:suggestion_id', :controller => 'home', :action => 'edit_suggestion'
 
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
