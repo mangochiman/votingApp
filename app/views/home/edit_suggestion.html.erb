@@ -31,12 +31,12 @@
 
               <div class="form-group">
                 <label>Title</label>
-                <input class="form-control" placeholder="Title" value="<%= @suggestion.title %>" name="title"/>
+                <input class="form-control" placeholder="Title" value="<%= @suggestion.title %>" name="title" required="true"/>
               </div>
 
               <div class="form-group">
                 <label>Suggestion</label>
-                <textarea rows="3" class="form-control" placeholder="Suggestions" name="data"><%= @suggestion.data %></textarea>
+                <textarea rows="3" class="form-control" placeholder="Suggestions" name="data" required="true"><%= @suggestion.data %></textarea>
               </div>
 
               <%= hidden_field_tag("suggestion_id", params[:suggestion_id]) %>

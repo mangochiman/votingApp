@@ -85,6 +85,7 @@
                       <th>#</th>
                       <th>Topic</th>
                       <th>Suggestions</th>
+                      <th>Date Created</th>
                       <th colspan="2" style="text-align: center;">Actions</th>
                     </tr>
                   </thead>
@@ -95,6 +96,7 @@
                         <td><%= count= count + 1 %></td>
                         <td><%= suggestion.title %></td>
                         <td><%= suggestion.data %></td>
+                        <td><%= suggestion.created_at.to_date.strftime("%d/%b/%Y") %></td>
                         <td><button onclick="editSuggestion('<%= suggestion.suggestion_id %>')" class="btn btn-warning btn-block" type="button">Edit</button></td>
                         <td><button onclick="confirmAction('<%= suggestion.suggestion_id %>')" class="btn btn-danger btn-block" type="button">Delete</button></td>
                       </tr>

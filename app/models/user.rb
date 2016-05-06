@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :votes, :foreign_key => :user_id
   cattr_accessor :current_user
 
+  validates_uniqueness_of :phone_number, :message => 'Phone number already taken'
   def try_to_login
     User.authenticate(self.username,self.password)
   end

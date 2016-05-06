@@ -1,0 +1,63 @@
+<script type="text/javascript">
+  function editProfile(){
+    window.location = "/edit_profile"
+  }
+</script>
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">User Profile</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+
+<% if flash[:notice] %>
+  <div class="alert alert-success alert-dismissable">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-tasks fa-fw"></i> My Profile
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body">
+        <div class="list-group">
+          <a class="list-group-item" href="#">
+            <i class="fa fa-angle-right"></i> First Name
+            <span class="pull-right medium"><em><%= @user.first_name %></em>
+            </span>
+          </a>
+          <a class="list-group-item" href="#">
+            <i class="fa fa-angle-right"></i> Last Name
+            <span class="pull-right medium"><em><%= @user.last_name %></em>
+            </span>
+          </a>
+          <a class="list-group-item" href="#">
+            <i class="fa fa-angle-right"></i> Nick Name
+            <span class="pull-right medium"><em><%= @user.nick_name %></em>
+            </span>
+          </a>
+          <a class="list-group-item" href="#">
+            <i class="fa fa-angle-right"></i> Phone Number
+            <span class="pull-right medium"><em><%= @user.phone_number %></em>
+            </span>
+          </a>
+          <a class="list-group-item" href="#">
+            <i class="fa fa-angle-right"></i> Date Created
+            <span class="pull-right medium"><em><%= @user.created_at.to_date.strftime("%d/%b/%Y") %></em>
+            </span>
+          </a>
+
+        </div>
+        <!-- /.list-group -->
+        <a class="btn btn-default btn-block" href="#" onclick="editProfile();">Edit My Profile</a>
+      </div>
+      <!-- /.panel-body -->
+    </div>
+  </div>
+</div>

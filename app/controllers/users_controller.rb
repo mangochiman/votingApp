@@ -13,9 +13,35 @@ class UsersController < ApplicationController
   end
 
   def user_profile
-    render :layout => false
+    @user = User.find(session[:user])
+    render :layout => 'voter' if @user.role.downcase == 'user'
   end
 
+  def edit_profile
+    @user = User.find(session[:user])
+    render :layout => 'voter' if @user.role.downcase == 'user'
+  end
+
+  def update_my_profle
+    phone_number = params[:phone_number]
+    first_name = params[:first_name]
+    last_name = params[:last_name]
+    nick_name = params[:nick_name]
+
+    user = User.find(session[:user])
+    user.phone_number = phone_number
+    user.first_name = first_name
+    user.last_name = last_name
+    user.nick_name = nick_name
+    if user.save
+      flash[:notice] = "You have succesfully edited your details"
+    else
+      flash[:notice] = user.errors.first.last
+    end
+
+    redirect_to("/user_profile") and return
+  end
+  
   def authenticate_client
     user = User.find_by_phone_number(params[:phone_number])
     if !user
