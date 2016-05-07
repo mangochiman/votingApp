@@ -1,0 +1,152 @@
+<script type="text/javascript">
+  var tournamentID = '<%= params[:tournament_id] %>';
+  var competitionsHash = JSON.parse('<%= @competition_hash.to_json %>');
+  var usersHash = JSON.parse('<%= @users.to_json %>');
+
+  function viewParticipants(){
+    jQuery.ajax({
+      type: "POST",
+      url: "/home/render_tournament_participants",
+      data: "tournament_id="+ tournamentID,
+      success: function(results){
+        results = eval('(' + results + ')');
+        html = '<div class="list-group">';
+
+        for (var i in results){
+          firstName = results[i]["first_name"];
+          lastName = results[i]["last_name"];
+          nickName = results[i]["nick_name"];
+          phoneNumber = results[i]["phone_number"];
+          html += '<a class="list-group-item" href="#">';
+          html += '<i class="fa"></i>' + firstName + ' ' +  lastName;
+          html += '<span class="pull-right small"><em>' + phoneNumber + '</em></span>'
+          html += '</a>'
+        }
+
+        html += '</div>';
+
+        $('.view').html(html);
+
+      }
+
+    });
+  }
+
+  function viewResults(){
+    jQuery.ajax({
+      type: "POST",
+      url: "/home/render_tournament_results",
+      data: "tournament_id="+ tournamentID,
+      success: function(results){
+        results = eval('(' + results + ')');
+        html = '<div class="list-group">';
+
+        for (var i in results){
+          firstName = results[i]["first_name"];
+          lastName = results[i]["last_name"];
+          nickName = results[i]["nick_name"];
+          result = results[i]["result"];
+
+          html += '<a class="list-group-item" href="#">';
+          html += '<i class="fa"></i>' + firstName + ' ' +  lastName;
+          html += '<span class="pull-right small"><em>' + result + '</em></span>'
+          html += '</a>'
+        }
+
+        html += '</div>';
+
+        $('.view').html(html);
+      }
+
+    });
+  }
+
+  function viewPredictions(){
+    jQuery.ajax({
+      type: "POST",
+      url: "/home/render_tournament_predictions",
+      data: "tournament_id="+ tournamentID,
+      success: function(results){
+        results = eval('(' + results + ')');
+        html = "<table class='table table-striped table-bordered table-hover'>";
+        for (var competitionID in results){
+          competitionName = competitionsHash[competitionID];
+          html += '<tr style="text-align: center;">';
+          html += '<td> Competition Name: <span style="font-weight: bold;">' + competitionName + '</span></td>';
+          html += '</tr>';
+
+          for (var voterID in results[competitionID]){
+            votersName = usersHash[voterID];
+            console.log("Voter Name = " + votersName)
+            votes = results[competitionID][voterID];
+
+            my_votes = []
+            for (var i=0; i<= votes.length - 1; i++){
+              participantName = usersHash[votes[i]];
+              my_votes.push(participantName)
+            }
+            html += '<tr>';
+            html += '<td>' + '<span style="font-weight: bold;">'  + votersName + ' : </span><i>' + my_votes.join(', ') + '</i></td>';
+            html += '</tr>';
+
+          }
+        }
+        html += '</table>';
+
+        $('.view').html(html);
+      }
+
+    });
+  }
+
+</script>
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header"><%= "#{@tournament.name} (#{@tournament.start_date.to_date.strftime('%d/%b/%Y') rescue @tournament.start_date} - #{@tournament.end_date.to_date.strftime('%d/%b/%Y') rescue @tournament.end_date})" %></h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-bell fa-tasks"></i> Select Task
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+
+          <a class="list-group-item" href="#" onclick="viewParticipants();">
+            <i class="fa fa-comment fa-tasks"></i> View Participants
+          </a>
+
+          <a class="list-group-item" href="#" onclick="viewResults();">
+            <i class="fa fa-twitter fa-tasks"></i> View Results
+          </a>
+
+          <a class="list-group-item" href="#" onclick="viewPredictions();">
+            <i class="fa fa-envelope fa-tasks"></i> View Predictions
+          </a>
+          
+        </div>
+        
+        <a href="/" class="btn btn-default btn-block">Home</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-bar-chart-o fa-columns"></i> View
+      </div>
+
+      <div class="panel-body view">
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- /.col-lg-4 -->
+</div>

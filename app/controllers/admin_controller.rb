@@ -241,5 +241,21 @@ class AdminController < ApplicationController
   def suggestions
     @suggestions = Suggestion.find(:all, :order => 'created_at DESC')
   end
+
+  def tournament_details
+    @tournament = Tournament.find(params[:tournament_id])
+    @competition_hash = {}
+    @users = {}
+
+    @tournament.competitions.each do |competition|
+      @competition_hash[competition.voting_type_id] = competition.name
+    end
+
+
+    User.all.each do |user|
+      @users[user.user_id] = user.first_name.to_s + " " + user.last_name.to_s
+    end
+
+  end
   
 end

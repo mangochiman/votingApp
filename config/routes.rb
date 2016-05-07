@@ -25,6 +25,7 @@ ActionController::Routing::Routes.draw do |map|
   map.edit_suggestion '/edit_suggestion/:suggestion_id', :controller => 'home', :action => 'edit_suggestion'
   map.edit_profile '/edit_profile', :controller => 'users', :action => 'edit_profile'
   map.change_password '/change_password', :controller => 'users', :action => 'change_password'
+  map.view_tournament '/tournament_details/:tournament_id', :controller => 'admin', :action => 'tournament_details'
 
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'

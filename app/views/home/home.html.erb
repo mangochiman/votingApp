@@ -15,12 +15,13 @@
       <!-- /.panel-heading -->
       <div class="panel-body">
         <% @tournaments.each do |tournament| %>
-          <a class="list-group-item" href="#">
+          <a class="list-group-item" href="/tournament_details/<%=tournament.tournament_id%>">
             <i class="fa fa-delicious fa-fw"></i><%= "#{tournament.name} <b>(#{tournament.start_date.to_date.strftime('%d-%b-%Y')} - #{tournament.end_date})</b>" %>
             <span class="pull-right text-muted small"><em><%= tournament.sponsored_by %></em>
             </span>
           </a>
         <% end %>
+        
       </div>
       <!-- /.panel-body -->
     </div>
