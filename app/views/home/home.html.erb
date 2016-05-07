@@ -21,7 +21,7 @@
             </span>
           </a>
         <% end %>
-        
+
       </div>
       <!-- /.panel-body -->
     </div>
@@ -37,12 +37,13 @@
       <!-- /.panel-heading -->
       <div class="panel-body">
         <div class="list-group">
-          <a class="list-group-item" href="#">
-            <i class="fa fa-comment fa-fw"></i> New Comment
-            <span class="pull-right text-muted small"><em>4 minutes ago</em>
-            </span>
-          </a>
-
+          <% @recent_votes.each do |user| %>
+            <a class="list-group-item" href="#">
+              <i class="fa"></i><%= "#{user.first_name} #{user.last_name}" %>
+              <span class="pull-right text-muted small"><em><%= user.phone_number %></em>
+              </span>
+            </a>
+          <% end %>
         </div>
         <!-- /.list-group -->
         <a class="btn btn-default btn-block" href="#">View All Alerts</a>
