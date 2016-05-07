@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  before_filter :admin_is_required, :only => [:home]
   def home
     @tournaments = Tournament.find(:all, :order => "start_date DESC", :limit => 10)
     @all_tournaments = Tournament.all

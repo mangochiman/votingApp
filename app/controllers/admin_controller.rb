@@ -1,4 +1,5 @@
 class AdminController < ApplicationController
+  before_filter :admin_is_required
   def settings
 
   end

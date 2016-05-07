@@ -28,4 +28,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def admin_is_required
+    unless session[:user].blank?
+     user = User.find(session[:user])
+     if user.role.downcase != 'admin'
+       redirect_to('/voter') and return
+     end
+    end
+  end
+
 end
