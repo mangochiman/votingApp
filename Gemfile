@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '1.8.7'
+ruby 'ruby-1.8.7-p374'
 gem 'rails', '2.3.5'
 gem 'mysql'
 gem 'warden', '0.10.7'
