@@ -26,7 +26,7 @@
       <!-- /.panel-body -->
     </div>
 
-    <a class="btn btn-default btn-block" href="#">View All Tournaments</a>
+    <a class="btn btn-default btn-block" href="#"><b><%= @tournaments.count %></b> Tournaments</a>
   </div>
   <!-- /.col-lg-8 -->
   <div class="col-lg-4">
@@ -46,7 +46,7 @@
           <% end %>
         </div>
         <!-- /.list-group -->
-        <a class="btn btn-default btn-block" href="#">View All Alerts</a>
+        <a class="btn btn-default btn-block" href="#"><b><%= @recent_votes.count %></b> recent votes</a>
       </div>
     </div>
   </div>
