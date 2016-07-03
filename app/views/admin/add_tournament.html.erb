@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag("metallic") %>
 <script type="text/javascript">
   
   function editTournament(tournamentID){
@@ -31,22 +32,22 @@
             <form role="form" action="/admin/create_tournament">
               <div class="form-group">
                 <label>Tournament Name</label>
-                <input class="form-control" placeholder="Tournament Name" name="name"/>
+                <input class="form-control" placeholder="Tournament Name" name="name" required/>
               </div>
 
               <div class="form-group">
                 <label>Start Date</label>
-                <input class="form-control" placeholder="Start Date" name="start_date"/>
+                <input class="form-control date-picker" placeholder="Start Date" name="start_date" required/>
               </div>
 
               <div class="form-group">
                 <label>End Date</label>
-                <input class="form-control" placeholder="End Date" name="end_date"/>
+                <input class="form-control date-picker" placeholder="End Date" name="end_date" required/>
               </div>
 
               <div class="form-group">
                 <label>Sponsored By</label>
-                <input class="form-control" placeholder="Sponsored by" name="sponsor"/>
+                <input class="form-control" placeholder="Sponsored by" name="sponsor" required/>
               </div>
 
               <!--<div class="form-group">
@@ -88,15 +89,15 @@
                   <tbody>
                     <% count = 0 %>
                     <% @tournaments.each do |tournament| %>
-                    <tr>
-                      <td><%= count= count + 1 %></td>
-                      <td><%= tournament.name %></td>
-                      <td><%= tournament.start_date %></td>
-                      <td><%= tournament.end_date %></td>
-                      <td><%= tournament.sponsored_by %></td>
-                      <td><button onclick="editTournament('<%= tournament.tournament_id %>')" class="btn btn-warning btn-block" type="button">Edit</button></td>
-                      <td><button class="btn btn-danger btn-block" type="button">Delete</button></td>
-                    </tr>
+                      <tr>
+                        <td><%= count= count + 1 %></td>
+                        <td><%= tournament.name %></td>
+                        <td><%= tournament.start_date %></td>
+                        <td><%= tournament.end_date %></td>
+                        <td><%= tournament.sponsored_by %></td>
+                        <td><button onclick="editTournament('<%= tournament.tournament_id %>')" class="btn btn-warning btn-block" type="button">Edit</button></td>
+                        <td><button class="btn btn-danger btn-block" type="button">Delete</button></td>
+                      </tr>
                     <% end %>
                   </tbody>
                 </table>

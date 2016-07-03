@@ -153,6 +153,13 @@
     <!-- Custom Theme JavaScript -->
     <script src="/startbootstrap-sb-admin-2-1.0.7/dist/js/sb-admin-2.js"></script>
 
+    <%= javascript_include_tag("zebra_datepicker") %>
+    <script type="text/javascript">
+      jQuery('.date-picker').Zebra_DatePicker({
+        //view : 'years',
+        //direction: ['<%=  (Date.today.beginning_of_year).strftime("%Y-%m-%d") %>', '<%=  (Date.today.end_of_year).strftime("%Y-%m-%d") %>']
+      });
+    </script>
   </body>
 
 </html>

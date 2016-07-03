@@ -123,6 +123,8 @@ class HomeController < ApplicationController
       competition_id = competition.voting_type_id
       data[competition_id] = {}
       competition.votes.each do |vote|
+        user = User.find(vote.user_id) rescue nil
+        next if user.blank?
         voter = vote.user_id
         participant_id = vote.participant_id
 
