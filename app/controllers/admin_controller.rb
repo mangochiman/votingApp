@@ -136,7 +136,7 @@ class AdminController < ApplicationController
 
   def add_my_tourney_result
     @tournament = Tournament.find(params[:tournament_id])
-    @tournament_participants = User.all
+    @tournament_participants = @tournament.participants
   end
 
   def capture_tourney_results

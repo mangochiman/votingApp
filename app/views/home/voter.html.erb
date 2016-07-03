@@ -75,20 +75,22 @@
                   <td><%= competition.max_votes %></td>
                   <td><%= competition.start_date %></td>
                   <td><%= competition.end_date %></td>
-                  <td><%= competition.total_voters.count %></td>
+                  <td><button class="btn btn-info btn-block" type="button"><%= competition.total_voters.count %></button></td>
                   <td><%= competition.tournament.name %></td>
-                  <% if @user.participated_in_competition(competition) %>
-                    <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Edit Predictions</button></td>
+                  <% if competition.tournament.open_for_votes== true %>
+                    <% if @user.participated_in_competition(competition) %>
+                      <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Edit Predictions</button></td>
+                    <% else %>
+                      <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Participate</button></td>
+                    <% end %>
+                    <% if @user.participated_in_competition(competition) %>
+                      <td><button onmousedown="confirmAction(<%= competition.voting_type_id %>)" class="btn btn-danger btn-block" type="button">Withdraw</button></td>
+                    <% else %>
+                      <td><button class="btn btn-danger btn-block disabled" type="button">Withdraw</button></td>
+                    <% end %>
                   <% else %>
-                    <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Participate</button></td>
+                        <td colspan="2"><button class="btn btn-danger btn-block disabled" type="button">Not Open for Votes</button></td>
                   <% end %>
-
-                  <% if @user.participated_in_competition(competition) %>
-                    <td><button onmousedown="confirmAction(<%= competition.voting_type_id %>)" class="btn btn-danger btn-block" type="button">Withdraw</button></td>
-                  <% else %>
-                    <td><button class="btn btn-danger btn-block disabled" type="button">Withdraw</button></td>
-                  <% end %>
-
                 </tr>
               <% end %>
             </tbody>
