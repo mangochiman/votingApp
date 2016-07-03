@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   def home
     @tournaments = Tournament.find(:all, :order => "start_date DESC", :limit => 10)
     @all_tournaments = Tournament.all
-    @recent_votes = Vote.find(:all, :order => 'created_at DESC').collect{|v|v.user}.compact
+    @recent_votes = Vote.find(:all, :order => 'created_at DESC', :group => 'user_id, voting_type_id').collect{|v|v.user}.compact
   end
 
   def voter
