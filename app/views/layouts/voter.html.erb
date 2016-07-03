@@ -55,12 +55,16 @@
           <a class="navbar-brand" href="/">Online Chess Voting App</a>
         </div>
         <!-- /.navbar-header -->
-
+<%
+  user = User.find(session[:user])
+  nick_name = user.nick_name
+  nick_name = user.first_name if nick_name.blank?
+%>
         <ul class="nav navbar-top-links navbar-right">
         
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+              <i class="fa fa-2x"><%= nick_name %></i>  <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
               <li><a href="/user_profile"><i class="fa fa-user fa-fw"></i> User Profile</a>
