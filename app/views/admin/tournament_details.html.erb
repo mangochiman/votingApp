@@ -129,15 +129,18 @@
     });
   }
 
+  function selectPredictionsWinners(){
+
+  }
 </script>
 <%
- if @tournament.open_for_votes == true
-   tournament_status = 'Open for Predictions';
-   color = 'green'
- else
-   tournament_status = 'Closed for Predictions';
-   color = 'red';
- end
+if @tournament.open_for_votes == true
+  tournament_status = 'Open for Predictions';
+  color = 'green'
+else
+  tournament_status = 'Closed for Predictions';
+  color = 'red';
+end
 %>
 
 <div class="row">
@@ -172,6 +175,10 @@
               <i class="fa fa-thumbs-o-up"></i> Enable Predictions
             </a>
           <% else %>
+            <a class="list-group-item" href="#" onclick="selectPredictionsWinners();">
+              <i class="fa fa-unsorted"></i> Select Prediction Winners
+            </a>
+
             <a class="list-group-item" href="#" onclick="disablePredictionsConfirm();">
               <i class="fa fa-lock"></i> Disable Predictions
             </a>
