@@ -5,6 +5,7 @@ class CreateTournaments < ActiveRecord::Migration
       t.string :start_date
       t.string :end_date
       t.string :sponsored_by
+      t.boolean :open_for_votes, :default => false
       t.timestamps
     end
   end

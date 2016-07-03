@@ -89,10 +89,25 @@ class AdminController < ApplicationController
     tournament.start_date = start_date
     tournament.end_date = end_date
     tournament.sponsored_by = sponsor
+    tournament.open_for_votes = false
     tournament.save
 
     flash[:notice] = "You have successfully added a new tournament"
     redirect_to("/add_tournament") and return
+  end
+
+  def enable_tournament_for_predictions
+    tournament = Tournament.find(params[:tournament_id])
+    tournament.open_for_votes = true
+    tournament.save
+    render :text => true and return
+  end
+
+  def disable_tournament_for_predictions
+    tournament = Tournament.find(params[:tournament_id])
+    tournament.open_for_votes = false
+    tournament.save
+    render :text => true and return
   end
 
   def edit_tournament

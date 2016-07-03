@@ -58,9 +58,20 @@
     font-weight: bold;
   }
 </style>
+
+<%
+if @tournament.open_for_votes == true
+  tournament_status = 'Open for Predictions';
+  color = 'green'
+else
+  tournament_status = 'Closed for Predictions';
+  color = 'red';
+end
+%>
+
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header"><%= @tournament.name %></h1>
+    <h1 class="page-header"><%= "#{@tournament.name} (#{@tournament.start_date.to_date.strftime('%d/%b/%Y') rescue @tournament.start_date} - #{@tournament.end_date.to_date.strftime('%d/%b/%Y') rescue @tournament.end_date})" %> <span style="font-size:12pt; color: <%= color %>; font-weight: bold;"><%= tournament_status %></span></h1>
   </div>
 </div>
 
