@@ -183,5 +183,30 @@ class HomeController < ApplicationController
     suggestion.delete
     render :text => "true" and return
   end
+
+  def create_winners
+    tournament_id = params[:tournament_id]
+    competition_id = params[:competition_id]
+    
+    position = 1
+    ActiveRecord::Base.transaction do
+      old_winners = PredictionWinner.find(:all, :conditions => ["competition_id =?", competition_id])
+      old_winners.each do |old_winner|
+        old_winner.delete
+      end
+      params[:winners_ids].each do |winner_id|
+        prediction_winner = PredictionWinner.new
+        prediction_winner.voter_id = winner_id
+        prediction_winner.competition_id = competition_id
+        prediction_winner.position = position
+        prediction_winner.created_at = Time.now
+        prediction_winner.updated_at = Time.now
+        prediction_winner.save
+        position = position + 1
+      end
+    end
+
+    redirect_to("/tournament_details/#{tournament_id}")
+  end
   
 end

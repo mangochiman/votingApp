@@ -3,6 +3,7 @@
   var competitionsHash = JSON.parse('<%= @competition_hash.to_json %>');
   var usersHash = JSON.parse('<%= @users.to_json %>');
   var competition_and_voters = JSON.parse('<%= @competition_and_voters.to_json %>');
+  var competition_and_winners = JSON.parse('<%= @competition_and_winners.to_json %>');
 
   function viewParticipants(){
     jQuery.ajax({
@@ -134,17 +135,20 @@
     jQuery('#competitionModal').modal('show');
   }
 
+  var competitionID;
+
   function loadCompetitionVoters(obj){
+    competitionID = obj.getAttribute('competition_id')
     jQuery('#competitionModal').modal('hide');
     competition_id = obj.getAttribute('competition_id');
     voters = competition_and_voters[competition_id];
-    console.log(voters);
+    winners = competition_and_winners[competition_id];
     
     html = '<div class="row">';
     html += '<div class="col-lg-6">';
     html += '<div class="table-responsive">';
     html += '<table class="table table-striped table-hover primary-table">';
-    html += '<thead><tr><th colspan="3" style="text-align: center;">Voters</th></tr></thead>';
+    html += '<thead><tr><th colspan="3" style="text-align: center;">Voters Minus Winners</th></tr></thead>';
     html += '<tbody class="voters">';
 
     count = 1;
@@ -153,7 +157,7 @@
       last_name = voters[user_id]["last_name"];
       nick_name = voters[user_id]["nick_name"];
 
-      html += '<tr><td class="voter_index">' + count + '</td><td>' + first_name + ' ' + last_name + '</td><td style="text-align: center; cursor: pointer;" onmouseup="selectVoter(this)"><span userid="' + user_id + '" class="fa fa-angle-double-right"></span></td></tr>';
+      html += '<tr id="' + user_id + '"><td class="voter_index">' + count + '</td><td>' + first_name + ' ' + last_name + '</td><td style="text-align: center; cursor: pointer;" onmouseup="selectVoter(this)"><span userid="' + user_id + '" class="fa fa-angle-double-right"></span></td></tr>';
       count = count + 1
     }
 
@@ -166,7 +170,15 @@
     html += '<div class="table-responsive">';
     html += '<table class="table table-striped table-hover sortable">';
     html += '<thead><tr><th colspan="3" style="text-align: center;">Winners</th></thead>';
-    html += '<tbody class="voters">';
+    html += '<tbody class="voters winners">';
+
+    for (var position in winners){
+      first_name = winners[position]["first_name"];
+      last_name = winners[position]["last_name"];
+      nick_name = winners[position]["nick_name"];
+      user_id = winners[position]["user_id"];
+      html += '<tr><td class="winner_index">' + position + '</td><td>' + first_name + ' ' + last_name + '</td><td style="text-align: center; cursor: pointer;" onmouseup="selectVoter(this)"><span userid="' + user_id + '" class="fa fa-angle-double-left"></span></td></tr>';
+    }
 
     html += '</tbody>';
     html += '</table>';
@@ -175,10 +187,14 @@
 
     html += "</div>";
 
-    html += '<center><button  class="btn btn-primary">Save Button</button>&nbsp;';
-    html += '<button  class="btn btn-danger">Cancel Button</button></center>';
+    html += '<center><button onclick="saveWinners();" class="btn btn-primary">Save Button</button>&nbsp;';
+    html += '<button onclick="cancelEvent();" class="btn btn-danger">Cancel Button</button></center>';
 
     $('.view').html(html);
+  }
+
+  function cancelEvent(){
+    window.location = '/tournament_details/' + tournamentID;
   }
 
   function selectVoter(obj){
@@ -219,7 +235,36 @@
       $(this).html(i + 1);
     });
   };
-  
+
+  function saveWinners(){
+    spanElements = $('.winners').find("span");
+    winners_data = document.getElementById("winners_data")
+    if (winners_data) winners_data.parentNode.removeChild(winners_data);
+
+    form = document.createElement('form');
+    form.action ='/home/create_winners';
+    form.method = 'POST'
+    form.id = 'winners_data';
+
+    for (var i=0; i <= spanElements.length - 1; i++){
+      userid = spanElements[i].getAttribute("userid");
+      createInput(form, 'text', "winners_ids[]", userid);
+    }
+
+    createInput(form, 'text', "competition_id", competitionID);
+    createInput(form, 'text', "tournament_id", tournamentID);
+    document.getElementsByTagName('body')[0].appendChild(form);
+    form.submit();
+  }
+
+  function createInput(form, type, name, value){
+    input = document.createElement('input');
+    input.type = type
+    input.value = value
+    input.name = name
+    form.appendChild(input)
+  }
+
 </script>
 <%
 if @tournament.open_for_votes == true
@@ -362,3 +407,25 @@ end
   </div>
 </div>
 <!--CONFIRMATION POPUP END -->
+
+<!-- Modal -->
+<div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Disable Predictions</h4>
+      </div>
+      <div class="modal-body">
+        This will save the selected individuals as winners. Are you really sure about this?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No, Am Not Sure</button>
+        <button onclick="saveWinners();" type="button" class="btn btn-primary">Yes, Am Sure</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

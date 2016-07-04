@@ -263,20 +263,38 @@ class AdminController < ApplicationController
     @competition_hash = {}
     @users = {}
     @competition_and_voters = {}
+    @competition_and_winners = {}
 
+    user_ids = []
     @tournament.competitions.each do |competition|
       @competition_hash[competition.voting_type_id] = competition.name
       competition_id = competition.voting_type_id
+
+      competition.prediction_winners.each do |prediction_winner|
+        user =  prediction_winner.user
+        next if user.blank?
+        position = prediction_winner.position
+        user_ids << user.user_id
+        @competition_and_winners[competition_id] = {} if @competition_and_winners[competition_id].blank?
+        @competition_and_winners[competition_id][position] = {}
+        @competition_and_winners[competition_id][position]["first_name"] = user.first_name
+        @competition_and_winners[competition_id][position]["last_name"] = user.last_name
+        @competition_and_winners[competition_id][position]["nick_name"] = user.nick_name
+        @competition_and_winners[competition_id][position]["user_id"] = user.user_id
+      end
+
       @competition_and_voters[competition_id] = {} if @competition_and_voters[competition_id].blank?
       competition.votes.each do |vote|
         next if vote.user.blank?
         user = vote.user
         user_id = user.user_id
+        next if user_ids.include?(user_id)
         @competition_and_voters[competition_id][user_id] = {} if @competition_and_voters[competition_id][user_id].blank?
         @competition_and_voters[competition_id][user_id]["first_name"] = user.first_name
         @competition_and_voters[competition_id][user_id]["last_name"] = user.last_name
         @competition_and_voters[competition_id][user_id]["nick_name"] = user.nick_name
       end
+
     end
 
 
