@@ -262,9 +262,21 @@ class AdminController < ApplicationController
     @tournament = Tournament.find(params[:tournament_id])
     @competition_hash = {}
     @users = {}
+    @competition_and_voters = {}
 
     @tournament.competitions.each do |competition|
       @competition_hash[competition.voting_type_id] = competition.name
+      competition_id = competition.voting_type_id
+      @competition_and_voters[competition_id] = {} if @competition_and_voters[competition_id].blank?
+      competition.votes.each do |vote|
+        next if vote.user.blank?
+        user = vote.user
+        user_id = user.user_id
+        @competition_and_voters[competition_id][user_id] = {} if @competition_and_voters[competition_id][user_id].blank?
+        @competition_and_voters[competition_id][user_id]["first_name"] = user.first_name
+        @competition_and_voters[competition_id][user_id]["last_name"] = user.last_name
+        @competition_and_voters[competition_id][user_id]["nick_name"] = user.nick_name
+      end
     end
 
 
