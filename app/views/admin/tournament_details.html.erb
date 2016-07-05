@@ -238,23 +238,27 @@
 
   function saveWinners(){
     spanElements = $('.winners').find("span");
-    winners_data = document.getElementById("winners_data")
-    if (winners_data) winners_data.parentNode.removeChild(winners_data);
+    if (spanElements.length >= 1){
+      winners_data = document.getElementById("winners_data")
+      if (winners_data) winners_data.parentNode.removeChild(winners_data);
 
-    form = document.createElement('form');
-    form.action ='/home/create_winners';
-    form.method = 'POST'
-    form.id = 'winners_data';
+      form = document.createElement('form');
+      form.action ='/home/create_winners';
+      form.method = 'POST'
+      form.id = 'winners_data';
 
-    for (var i=0; i <= spanElements.length - 1; i++){
-      userid = spanElements[i].getAttribute("userid");
-      createInput(form, 'text', "winners_ids[]", userid);
+      for (var i=0; i <= spanElements.length - 1; i++){
+        userid = spanElements[i].getAttribute("userid");
+        createInput(form, 'text', "winners_ids[]", userid);
+      }
+
+      createInput(form, 'text', "competition_id", competitionID);
+      createInput(form, 'text', "tournament_id", tournamentID);
+      document.getElementsByTagName('body')[0].appendChild(form);
+      form.submit();
+    }else{
+      jQuery()
     }
-
-    createInput(form, 'text', "competition_id", competitionID);
-    createInput(form, 'text', "tournament_id", tournamentID);
-    document.getElementsByTagName('body')[0].appendChild(form);
-    form.submit();
   }
 
   function createInput(form, type, name, value){
