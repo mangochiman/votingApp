@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :user_roles, :foreign_key => :user_id
   has_many :suggestions, :foreign_key => :user_id
   has_many :votes, :foreign_key => :user_id
+  has_many :trackers, :foreign_key => :user_id
+  
   cattr_accessor :current_user
 
   validates_uniqueness_of :phone_number, :message => 'Phone number already taken'
@@ -59,5 +61,12 @@ class User < ActiveRecord::Base
     return false if votes.blank?
     return true
   end
-  
+
+  def self.track_user(user_id, ip_address)
+    tracker = Tracker.new
+    tracker.user_id = user_id
+    tracker.ip_address = ip_address
+    tracker.save
+  end
+
 end
