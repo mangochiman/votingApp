@@ -303,5 +303,16 @@ class AdminController < ApplicationController
     end
 
   end
-  
+
+  def delete_winners
+    prediction_winners = PredictionWinner.find(:all, :conditions => ["competition_id =?", params[:competition_id]])
+    ActiveRecord::Base.transaction do
+      prediction_winners.each do |prediction_winner|
+        prediction_winner.delete
+      end
+    end
+    
+    redirect_to("/tournament_details/#{params[:tournament_id]}")
+  end
+
 end
