@@ -7,7 +7,33 @@ class HomeController < ApplicationController
   end
 
   def voter
+    @competition_and_voters = {}
+    @users = {}
     @competitions = Competition.all
+
+    @competitions.each do |competition|
+      competition_id = competition.voting_type_id
+      @competition_and_voters[competition_id] = {} if @competition_and_voters[competition_id].blank?
+      competition.votes.each do |vote|
+        next if vote.user.blank?
+        user = vote.user
+        user_id = user.user_id
+
+        participant = User.find(vote.participant_id) rescue nil
+
+        @competition_and_voters[competition_id][user_id] = {} if @competition_and_voters[competition_id][user_id].blank?
+        @competition_and_voters[competition_id][user_id]["participants"] = [] if @competition_and_voters[competition_id][user_id]["participants"].blank?
+        @competition_and_voters[competition_id][user_id]["first_name"] = user.first_name
+        @competition_and_voters[competition_id][user_id]["last_name"] = user.last_name
+        @competition_and_voters[competition_id][user_id]["nick_name"] = user.nick_name
+        @competition_and_voters[competition_id][user_id]["participants"] << (participant.nick_name rescue 'Deleted')
+      end
+    end
+
+    User.all.each do |user|
+      @users[user.user_id] = user.first_name.to_s + " " + user.last_name.to_s
+    end
+
     @user = session[:user]
     render :layout => "voter"
   end
@@ -52,9 +78,24 @@ class HomeController < ApplicationController
     @tournament = Tournament.find(params[:tournament_id])
     @competition_hash = {}
     @users = {}
-    
+    @competition_and_winners = {}
+
     @tournament.competitions.each do |competition|
       @competition_hash[competition.voting_type_id] = competition.name
+      competition_id = competition.voting_type_id
+
+      competition.prediction_winners.each do |prediction_winner|
+        user =  prediction_winner.user
+        next if user.blank?
+        position = prediction_winner.position
+        @competition_and_winners[competition_id] = {} if @competition_and_winners[competition_id].blank?
+        @competition_and_winners[competition_id][position] = {}
+        @competition_and_winners[competition_id][position]["first_name"] = user.first_name
+        @competition_and_winners[competition_id][position]["last_name"] = user.last_name
+        @competition_and_winners[competition_id][position]["nick_name"] = user.nick_name
+        @competition_and_winners[competition_id][position]["user_id"] = user.user_id
+      end
+      
     end
     
     

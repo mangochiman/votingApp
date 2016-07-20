@@ -2,6 +2,7 @@
   var tournamentID = '<%= params[:tournament_id] %>';
   var competitionsHash = JSON.parse('<%= @competition_hash.to_json %>');
   var usersHash = JSON.parse('<%= @users.to_json %>');
+  var competition_and_winners = JSON.parse('<%= @competition_and_winners.to_json %>');
 
   function viewParticipants(){
     jQuery.ajax({
@@ -99,16 +100,54 @@
     });
   }
   
+  var competitionID;
+
+  function viewResultsPopup(){
+    jQuery('#competitionModal').modal('show');
+  }
+
+  function loadCompetitionWinners(obj){
+    competitionID = obj.getAttribute('competition_id')
+    jQuery('#competitionModal').modal('hide');
+    competition_id = obj.getAttribute('competition_id');
+    winners = competition_and_winners[competition_id];
+
+    html = '<div class="row">';
+    html += '<div class="col-lg-12">';
+    html += '<div class="table-responsive">';
+    html += '<table class="table table-striped table-hover">';
+    html += '<thead><tr><th colspan="2" style="text-align: center;">Winners</th></thead>';
+    html += '<tbody>';
+
+    for (var position in winners){
+      first_name = winners[position]["first_name"];
+      last_name = winners[position]["last_name"];
+      nick_name = winners[position]["nick_name"];
+      user_id = winners[position]["user_id"];
+      html += '<tr><td class="winner_index">' + position + '</td><td><span class="pull-right">' + first_name + ' ' + last_name + '</span></td></tr>';
+    }
+
+    html += '</tbody>';
+    html += '</table>';
+    html += '</div>';
+    html += "</div>";
+
+    html += "</div>";
+
+
+    $('.view').html(html);
+  }
+
 </script>
 
 <%
- if @tournament.open_for_votes == true
-   tournament_status = 'Open for Predictions';
-   color = 'green'
- else
-   tournament_status = 'Closed for Predictions';
-   color = 'red';
- end
+if @tournament.open_for_votes == true
+  tournament_status = 'Open for Predictions';
+  color = 'green'
+else
+  tournament_status = 'Closed for Predictions';
+  color = 'red';
+end
 %>
 
 <div class="row">
@@ -127,17 +166,20 @@
         <div class="list-group">
 
           <a class="list-group-item" href="#" onclick="viewParticipants();">
-            <i class="fa fa-comment fa-tasks"></i> View Participants
+            <i class="fa fa-eye"></i> View Participants
           </a>
 
           <a class="list-group-item" href="#" onclick="viewResults();">
-            <i class="fa fa-twitter fa-tasks"></i> View Results
+            <i class="fa fa-eye"></i> View Results
           </a>
 
           <a class="list-group-item" href="#" onclick="viewPredictions();">
-            <i class="fa fa-envelope fa-tasks"></i> View Predictions
+            <i class="fa fa-eye"></i> View Predictions
           </a>
 
+          <a class="list-group-item" href="#" onclick="viewResultsPopup();">
+            <i class="fa fa-eye"></i> View Winners
+          </a>
         </div>
 
       </div>
@@ -160,3 +202,29 @@
 
   <!-- /.col-lg-4 -->
 </div>
+
+
+
+<!--CONFIRMATION POPUP BEGIN -->
+<div class="modal fade" id="competitionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">
+          Select Competition
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="list-group">
+          <%  @tournament.competitions.each do |competition| %>
+            <a onclick="loadCompetitionWinners(this);" competition_id="<%= competition.voting_type_id %>" href="#" class="list-group-item">
+              <i class="fa"></i> <%= competition.name %>
+            </a>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--CONFIRMATION POPUP END -->

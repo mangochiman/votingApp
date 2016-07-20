@@ -1,6 +1,8 @@
 <script type="text/javascript">
   var currentCompetitionID;
-  
+  var usersHash = JSON.parse('<%= @users.to_json %>');
+  var competition_and_voters = JSON.parse('<%= @competition_and_voters.to_json %>');
+
   function participateCompetition(competitionID){
     window.location = "/predictions/" + competitionID;
   }
@@ -20,6 +22,43 @@
       }
 
     });
+  }
+
+  function loadVotersWithVotes(obj){
+
+    competitionID = obj.getAttribute('competition_id');
+    console.log(competitionID)
+    voters = competition_and_voters[competitionID];
+    console.log(voters)
+    if (jQuery.isEmptyObject(voters)){
+      html = '<center>No Data</center><br />';
+    }
+    else{
+      html = '<div class="row">';
+      html += '<div class="col-lg-12">';
+      html += '<div class="table-responsive">';
+      html += '<table class="table table-striped table-hover primary-table">';
+      html += '<tbody class="voters">';
+
+      for (var user_id in voters){
+        first_name = voters[user_id]["first_name"];
+        last_name = voters[user_id]["last_name"];
+        nick_name = voters[user_id]["nick_name"];
+        participants = voters[user_id]["participants"];
+        html += '<tr><td style="font-weight: bold;">' + first_name + ' ' + last_name + ': <i style="color: green;">' + participants.join(', ')  + '</i></td></tr>';
+      }
+
+      html += '</tbody>';
+      html += '</table>';
+      html += '</div>';
+      html += "</div>";
+
+      html += "</div>";
+    }
+
+    $('.voters_data').html(html);
+
+    jQuery('#voters').modal('show');
   }
 
 </script>
@@ -72,12 +111,24 @@
                 <tr>
                   <td><%= count = count + 1 %></td>
                   <td><%= competition.name %></td>
-                  <td><%= competition.max_votes %></td>
+
+                  <% if competition.tournament.open_for_votes == true %>
+                    <td><%= competition.max_votes %></td>
+                  <% else %>
+                    <td>N/A</td>
+                  <% end %>
+
                   <td><%= competition.start_date %></td>
                   <td><%= competition.end_date %></td>
-                  <td><button class="btn btn-info btn-block" type="button"><%= competition.total_voters.count %></button></td>
+
+                  <% if competition.tournament.open_for_votes == true %>
+                    <td><button class="btn btn-info btn-block" type="button" competition_id="<%= competition.voting_type_id %>" onclick="loadVotersWithVotes(this);"><%= competition.total_voters.count %></button></td>
+                  <% else %>
+                    <td>N/A</td>
+                  <% end %>
+
                   <td><%= competition.tournament.name %></td>
-                  <% if competition.tournament.open_for_votes== true %>
+                  <% if competition.tournament.open_for_votes == true %>
                     <% if @user.participated_in_competition(competition) %>
                       <td><button onmousedown="participateCompetition(<%= competition.voting_type_id %>)" class="btn btn-primary btn-block" type="button">Edit Predictions</button></td>
                     <% else %>
@@ -89,7 +140,7 @@
                       <td><button class="btn btn-danger btn-block disabled" type="button">Withdraw</button></td>
                     <% end %>
                   <% else %>
-                        <td colspan="2"><button class="btn btn-danger btn-block disabled" type="button">Not Open for Votes</button></td>
+                    <td colspan="2"><button class="btn btn-danger btn-block disabled" type="button">Not Open for Votes</button></td>
                   <% end %>
                 </tr>
               <% end %>
@@ -120,6 +171,28 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" onclick="withdrawFromCompetition();" data-dismiss="modal">Okay</button>
           <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--CONFIRMATION POPUP END -->
+
+
+<!--CONFIRMATION POPUP BEGIN -->
+<div class="modal fade" id="voters" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">
+          Voter and Their Votes
+        </h4>
+      </div>
+      <div class="modal-body">
+        <span class="voters_data"></span>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Okay</button>
         </div>
       </div>
     </div>
