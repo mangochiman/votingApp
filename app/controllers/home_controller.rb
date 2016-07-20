@@ -10,6 +10,7 @@ class HomeController < ApplicationController
     @competition_and_voters = {}
     @users = {}
     @competitions = Competition.all
+    @competition_and_winners = {}
 
     @competitions.each do |competition|
       competition_id = competition.voting_type_id
@@ -28,6 +29,19 @@ class HomeController < ApplicationController
         @competition_and_voters[competition_id][user_id]["nick_name"] = user.nick_name
         @competition_and_voters[competition_id][user_id]["participants"] << (participant.nick_name rescue 'Deleted')
       end
+
+      competition.prediction_winners.each do |prediction_winner|
+        user =  prediction_winner.user
+        next if user.blank?
+        position = prediction_winner.position
+        @competition_and_winners[competition_id] = {} if @competition_and_winners[competition_id].blank?
+        @competition_and_winners[competition_id][position] = {}
+        @competition_and_winners[competition_id][position]["first_name"] = user.first_name
+        @competition_and_winners[competition_id][position]["last_name"] = user.last_name
+        @competition_and_winners[competition_id][position]["nick_name"] = user.nick_name
+        @competition_and_winners[competition_id][position]["user_id"] = user.user_id
+      end
+
     end
 
     User.all.each do |user|
