@@ -21,7 +21,7 @@ class HomeController < ApplicationController
         user_id = user.user_id
 
         participant = User.find(vote.participant_id) rescue nil
-
+        user.first_name = user.nick_name if user.first_name.blank?
         @competition_and_voters[competition_id][user_id] = {} if @competition_and_voters[competition_id][user_id].blank?
         @competition_and_voters[competition_id][user_id]["participants"] = [] if @competition_and_voters[competition_id][user_id]["participants"].blank?
         @competition_and_voters[competition_id][user_id]["first_name"] = user.first_name
@@ -33,6 +33,7 @@ class HomeController < ApplicationController
       competition.prediction_winners.each do |prediction_winner|
         user =  prediction_winner.user
         next if user.blank?
+        user.first_name = user.nick_name if user.first_name.blank?
         position = prediction_winner.position
         @competition_and_winners[competition_id] = {} if @competition_and_winners[competition_id].blank?
         @competition_and_winners[competition_id][position] = {}
@@ -101,6 +102,7 @@ class HomeController < ApplicationController
       competition.prediction_winners.each do |prediction_winner|
         user =  prediction_winner.user
         next if user.blank?
+        user.first_name = user.nick_name if user.first_name.blank?
         position = prediction_winner.position
         @competition_and_winners[competition_id] = {} if @competition_and_winners[competition_id].blank?
         @competition_and_winners[competition_id][position] = {}
