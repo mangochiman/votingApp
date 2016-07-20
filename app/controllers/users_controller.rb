@@ -86,11 +86,11 @@ class UsersController < ApplicationController
     logged_in_user = User.authenticate(params[:phone_number], params[:password])
     if logged_in_user
       session[:user] = user
+      ip_address = request.remote_ip
+      User.track_user(user.user_id, ip_address)
       if user.role.downcase == 'admin'
         redirect_to("/") and return
       else
-        ip_address = request.remote_ip
-        User.track_user(user.user_id, ip_address)
         redirect_to("/voter") and return
       end
       
